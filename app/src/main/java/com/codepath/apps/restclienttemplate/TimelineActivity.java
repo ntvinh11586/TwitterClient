@@ -18,26 +18,27 @@ import cz.msebera.android.httpclient.Header;
 /**
  * Created by Vinh on 10/25/2016.
  */
-
 public class TimelineActivity extends AppCompatActivity {
 
     private TwitterClient client;
     private ArrayList<Tweet> tweets;
     private TweetArrayAdapter aTweets;
-    private ListView lvTweets;
+
+    private RecyclerView rvTweets;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
 
-        lvTweets = (ListView) findViewById(R.id.lvTweets);
+        rvTweets = (RecyclerView) findViewById(R.id.lvTweets);
 
         tweets = new ArrayList<>();
         aTweets = new TweetArrayAdapter(this, tweets);
 
-        lvTweets.setAdapter(aTweets);
-
+        rvTweets.setAdapter(aTweets);
+        rvTweets.setLayoutManager(new LinearLayoutManager(this));
 
         client = TwitterApplication.getRestClient();
 
@@ -48,17 +49,12 @@ public class TimelineActivity extends AppCompatActivity {
         client.getHomeTimeLine(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-//                Log.d("debug", json.toString());
-//                Toast.makeText(TimelineActivity.this, "lol", Toast.LENGTH_SHORT).show();
-//                ArrayList<Tweet> tweets = Tweet.fromJSONArray(json);
-
-
-                aTweets.addAll(Tweet.fromJSONArray(json));
+                tweets.addAll(Tweet.fromJSONArray(json));
+                aTweets.notifyDataSetChanged();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//                Log.d("debug", errorResponse.toString());
                 Toast.makeText(TimelineActivity.this, "fail", Toast.LENGTH_SHORT).show();
             }
         });

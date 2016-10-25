@@ -16,35 +16,69 @@ import java.util.List;
 /**
  * Created by Vinh on 10/25/2016.
  */
+public class TweetArrayAdapter extends RecyclerView.Adapter<TweetArrayAdapter.ViewHolder> {
 
-public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        public ImageView ivProfileImage;
+        public TextView tvUsername;
+        public TextView tvBody;
+        public TextView tvTimestamp;
+
+        public ViewHolder(View itemView) {
+
+            super(itemView);
+
+            ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
+            tvUsername = (TextView) itemView.findViewById(R.id.tvUserName);
+            tvBody = (TextView) itemView.findViewById(R.id.tvBody);
+            tvTimestamp = (TextView) itemView.findViewById(R.id.tvTimestamp);
+        }
+    }
+
+    private List<Tweet> mTweets;
+
+    private Context mContext;
 
     public TweetArrayAdapter(Context context, List<Tweet> tweets) {
-        super(context, 0, tweets);
+        mTweets = tweets;
+        mContext = context;
+    }
+
+    private Context getContext() {
+        return mContext;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        Tweet tweet = getItem(position);
+    public TweetArrayAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Context context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
 
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet, parent, false);
-        }
+        View tweetView = inflater.inflate(R.layout.item_tweet, parent, false);
 
-        ImageView ivProfileImage = (ImageView) convertView.findViewById(R.id.ivProfileImage);
-        TextView tvUsername = (TextView) convertView.findViewById(R.id.tvUserName);
-        TextView tvBody = (TextView) convertView.findViewById(R.id.tvBody);
+        ViewHolder viewHolder = new ViewHolder(tweetView);
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(TweetArrayAdapter.ViewHolder viewHolder, int position) {
+        Tweet tweet = mTweets.get(position);
+
+        ImageView ivProfileImage = viewHolder.ivProfileImage;
+        TextView tvUsername = viewHolder.tvUsername;
+        TextView tvBody = viewHolder.tvBody;
+        TextView tvTimestamp = viewHolder.tvTimestamp;
 
         tvUsername.setText(tweet.getUser().getScreenName());
-
         tvBody.setText(tweet.getBody());
+        tvTimestamp.setText(TwitterClientHelper.getRelativeTimeAgo(tweet.getTimestamp()));
 
         ivProfileImage.setImageResource(android.R.color.transparent);
-
         Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
+    }
 
-        return convertView;
-
+    @Override
+    public int getItemCount() {
+        return mTweets.size();
     }
 }
-

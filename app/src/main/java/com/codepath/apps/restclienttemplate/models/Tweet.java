@@ -9,7 +9,6 @@ import java.util.ArrayList;
 /**
  * Created by Vinh on 10/25/2016.
  */
-
 public class Tweet {
     public String getBody() {
         return body;
@@ -27,10 +26,15 @@ public class Tweet {
         return user;
     }
 
+    public String getTimestamp() {
+        return timestamp;
+    }
+
     private String body;
     private long uid;
     private User user;
     private String createdAt;
+    private String timestamp;
 
     public static Tweet fromJSON(JSONObject jsonObject) {
         Tweet tweet = new Tweet();
@@ -40,6 +44,7 @@ public class Tweet {
             tweet.uid = jsonObject.getLong("id");
             tweet.createdAt = jsonObject.getString("created_at");
             tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
+            tweet.timestamp = jsonObject.getString("created_at");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -68,3 +73,4 @@ public class Tweet {
     }
 
 }
+
