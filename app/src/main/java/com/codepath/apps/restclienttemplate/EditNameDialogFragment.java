@@ -89,7 +89,7 @@ public class EditNameDialogFragment extends DialogFragment {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditNameDialogListener listener = (EditNameDialogListener) getActivity();
+                EditNameDialogListener listener = (EditNameDialogListener) getTargetFragment();
 
                 listener.onFinishEditDialog(mEditText.getText().toString());
 
