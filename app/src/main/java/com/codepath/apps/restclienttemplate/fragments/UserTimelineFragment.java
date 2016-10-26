@@ -1,8 +1,10 @@
 package com.codepath.apps.restclienttemplate.fragments;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.widget.Toast;
 
+import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.TwitterApplication;
 import com.codepath.apps.restclienttemplate.TwitterClient;
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -16,6 +18,19 @@ import cz.msebera.android.httpclient.Header;
 public class UserTimelineFragment extends TweetsListFragment {
 
     private TwitterClient client;
+
+    @Override
+    public void fetchTimelineAsync(int page) {
+        Toast.makeText(getActivity(), "fetchTimelineAsync - profile", Toast.LENGTH_SHORT).show();
+
+        swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainer);
+        swipeContainer.setRefreshing(false);
+    }
+
+    @Override
+    void customLoadMoreDataFromApi(int page) {
+        Toast.makeText(getActivity(), "customLoadMoreDataFromApi - profile", Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,5 +63,6 @@ public class UserTimelineFragment extends TweetsListFragment {
             }
         });
     }
+
 
 }

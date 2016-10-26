@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.codepath.apps.restclienttemplate.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.TweetArrayAdapter;
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -17,13 +18,13 @@ import com.codepath.apps.restclienttemplate.models.Tweet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TweetsListFragment extends Fragment {
+public abstract class TweetsListFragment extends Fragment {
 
-    private ArrayList<Tweet> tweets;
-    private TweetArrayAdapter aTweets;
+    protected ArrayList<Tweet> tweets;
+    protected TweetArrayAdapter aTweets;
     protected RecyclerView rvTweets;
 
-    private SwipeRefreshLayout swipeContainer;
+    protected SwipeRefreshLayout swipeContainer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -34,11 +35,33 @@ public class TweetsListFragment extends Fragment {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         rvTweets.setLayoutManager(linearLayoutManager);
+        rvTweets.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                customLoadMoreDataFromApi(page);
+            }
+        });
 
+        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
+
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchTimelineAsync(0);
+            }
+        });
+
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
         return v;
     }
 
+    abstract public void fetchTimelineAsync(int page);
+
+    abstract void customLoadMoreDataFromApi(int page);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,19 +82,5 @@ public class TweetsListFragment extends Fragment {
         tweets.addAll(t);
         aTweets.notifyDataSetChanged();
     }
-
-//    swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
-//
-//    swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//        @Override
-//        public void onRefresh() {
-//            fetchTimelineAsync(0);
-//        }
-//    });
-//
-//    swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-//    android.R.color.holo_green_light,
-//    android.R.color.holo_orange_light,
-//    android.R.color.holo_red_light);
 
 }

@@ -94,38 +94,4 @@ public class TimelineActivity extends AppCompatActivity /*implements EditNameDia
             return tabTitles.length;
         }
     }
-
-
-//    private void customLoadMoreDataFromApi(int page) {
-//        client.getHomeTimeLine( new JsonHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-//                fragmentTweetsList.addAll(Tweet.fromJSONArray(json));
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//                Toast.makeText(TimelineActivity.this, "fail", Toast.LENGTH_SHORT).show();
-//            }
-//        }, page + 1);
-//    }
-//
-//
-//    public void fetchTimelineAsync(int page) {
-//        client.getHomeTimeLine( new JsonHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-////                tweets.clear(); chua sua
-//                fragmentTweetsList.addAll(Tweet.fromJSONArray(json));
-//
-////                swipeContainer.setRefreshing(false); chua sua
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//                Toast.makeText(TimelineActivity.this, "fail", Toast.LENGTH_SHORT).show();
-//            }
-//        }, 1);
-//    }
-
 }

@@ -5,15 +5,10 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.EditNameDialogFragment;
-import com.codepath.apps.restclienttemplate.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.TwitterApplication;
 import com.codepath.apps.restclienttemplate.TwitterClient;
@@ -40,26 +35,10 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
 
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-
-
-        return super.onCreateView(inflater, parent, savedInstanceState);
-    }
-
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        rvTweets = (RecyclerView) getView().findViewById(R.id.lvTweets);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        rvTweets.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount) {
-                customLoadMoreDataFromApi(page);
-            }
-        });
 
         FloatingActionButton a = (FloatingActionButton) view.findViewById(R.id.floating);
         a.setOnClickListener(new View.OnClickListener() {
@@ -69,19 +48,7 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
             }
         });
 
-        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
 
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                fetchTimelineAsync(0);
-            }
-        });
-
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
 
     }
 
@@ -91,6 +58,7 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                 refreshAll(Tweet.fromJSONArray(json));
 
+                swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainer);
                 swipeContainer.setRefreshing(false);
             }
 
@@ -101,7 +69,7 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
         }, 1);
     }
 
-    private void customLoadMoreDataFromApi(int page) {
+    void customLoadMoreDataFromApi(int page) {
 
         TwitterClient client = TwitterApplication.getRestClient();
 
@@ -151,7 +119,7 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
         client.setNewTweet(new JsonHttpResponseHandler(), inputText);
 
         // mistery
-        for (int i = 0; i < 100000000; i++) {
+        for (int i = 0; i < 500000000; i++) {
         }
 
         client.getHomeTimeLine(new JsonHttpResponseHandler() {
@@ -170,3 +138,4 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
 
 
 }
+

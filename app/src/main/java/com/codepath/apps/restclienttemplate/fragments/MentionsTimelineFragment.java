@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.Toast;
 
@@ -77,5 +78,16 @@ public class MentionsTimelineFragment extends TweetsListFragment implements Edit
         });
     }
 
+    @Override
+    public void fetchTimelineAsync(int page) {
+        Toast.makeText(getActivity(), "fetchTimelineAsync - mention", Toast.LENGTH_SHORT).show();
+
+        swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainer);
+        swipeContainer.setRefreshing(false);
+    }
+
+    void customLoadMoreDataFromApi(int page) {
+        Toast.makeText(getActivity(), "customLoadMoreDataFromApi - mention", Toast.LENGTH_SHORT).show();
+    }
 
 }
