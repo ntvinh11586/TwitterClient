@@ -6,12 +6,16 @@
         android:id="@+id/miProfile"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_profile"
+        android:orderInCategory="101"
         android:title="Profile"
-        android:onClick="onProfileView"></item>
+        android:onClick="onProfileView">
+    </item>
 
     <item
         android:id="@+id/miCompose"
         android:icon="@android:drawable/ic_delete"
+        android:orderInCategory="102"
         app:showAsAction="ifRoom"
-        android:title="Compose"></item>
+        android:title="Compose">
+    </item>
 </menu>

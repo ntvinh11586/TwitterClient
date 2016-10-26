@@ -59,7 +59,7 @@ public class TwitterClient extends OAuthBaseClient {
 		String apiUrl = getApiUrl("statuses/mentions_timeline.json");
 
 		RequestParams params = new RequestParams();
-		params.put("count", 10);
+		params.put("count", 7);
 		params.put("page", page);
 
 		getClient().get(apiUrl, params, handler);
@@ -68,7 +68,7 @@ public class TwitterClient extends OAuthBaseClient {
 	public void getUserTimeline(String screenName, AsyncHttpResponseHandler handler, int page) {
 		String apiUrl = getApiUrl("statuses/user_timeline.json");
 		RequestParams params = new RequestParams();
-		params.put("count", 10);
+		params.put("count", 7);
 		params.put("screen_name", screenName);
 		params.put("page", page);
 		getClient().get(apiUrl, params, handler);
@@ -77,7 +77,7 @@ public class TwitterClient extends OAuthBaseClient {
 	public void getUserFavorite(String screenName, AsyncHttpResponseHandler handler, int page) {
 		String apiUrl = getApiUrl("favorites/list.json");
 		RequestParams params = new RequestParams();
-		params.put("count", 10);
+		params.put("count", 7);
 		params.put("screen_name", screenName);
 		params.put("page", page);
 		getClient().get(apiUrl, params, handler);

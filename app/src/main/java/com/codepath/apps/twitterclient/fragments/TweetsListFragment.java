@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.codepath.apps.twitterclient.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.twitterclient.R;
@@ -22,22 +23,37 @@ public abstract class TweetsListFragment extends Fragment {
     protected ArrayList<Tweet> tweets;
     protected TweetArrayAdapter aTweets;
     protected RecyclerView rvTweets;
-
     protected SwipeRefreshLayout swipeContainer;
+    protected ProgressBar progressBar;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        tweets = new ArrayList<>();
+        aTweets = new TweetArrayAdapter(getActivity(), tweets);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tweets_list, parent, false);
 
-        rvTweets = (RecyclerView) view.findViewById(R.id.lvTweets);
+        rvTweets = (RecyclerView)view.findViewById(R.id.lvTweets);
         rvTweets.setAdapter(aTweets);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         rvTweets.setLayoutManager(linearLayoutManager);
 
         rvTweets.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+
+            @Override
+            public void onScrolled(RecyclerView view, int dx, int dy) {
+                super.onScrolled(view, dx, dy);
+            }
+
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
+                progressBar.setVisibility(View.VISIBLE);
                 customLoadMoreDataFromApi(page);
             }
         });
@@ -46,6 +62,7 @@ public abstract class TweetsListFragment extends Fragment {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                progressBar.setVisibility(View.VISIBLE);
                 fetchTimelineAsync(0);
             }
         });
@@ -55,6 +72,8 @@ public abstract class TweetsListFragment extends Fragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
+        progressBar = (ProgressBar)view.findViewById(R.id.pbLoading);
+
         return view;
     }
 
@@ -62,13 +81,6 @@ public abstract class TweetsListFragment extends Fragment {
 
     abstract void customLoadMoreDataFromApi(int page);
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        tweets = new ArrayList<>();
-        aTweets = new TweetArrayAdapter(getActivity(), tweets);
-    }
 
     public void addAll(List<Tweet> t) {
         tweets.addAll(t);

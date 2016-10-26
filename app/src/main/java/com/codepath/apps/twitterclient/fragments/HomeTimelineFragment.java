@@ -20,14 +20,14 @@ import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
-public class HomeTimelineFragment extends TweetsListFragment implements EditNameDialogFragment.EditNameDialogListener {
+public class HomeTimelineFragment extends TweetsListFragment implements EditNameDialogFragment.EditNameDialogListener  {
 
     private TwitterClient client;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setHasOptionsMenu(true);
         client = TwitterApplication.getRestClient();
         populateTimeLine();
 
@@ -37,7 +37,7 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.floating);
+        FloatingActionButton fab = (FloatingActionButton)view.findViewById(R.id.floating);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,10 +63,12 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
     }
 
     void customLoadMoreDataFromApi(int page) {
+
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                 addAll(Tweet.fromJSONArray(json));
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
@@ -104,8 +106,7 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
         client = TwitterApplication.getRestClient();
         client.setNewTweet(new JsonHttpResponseHandler(), inputText);
 
-        for (int i = 0; i < 500000000; i++) {
-        } // loop for true results
+        for (int i = 0; i < 500000000; i++) {} // loop for true results
 
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override

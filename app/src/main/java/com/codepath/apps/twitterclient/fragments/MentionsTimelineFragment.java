@@ -35,7 +35,7 @@ public class MentionsTimelineFragment extends TweetsListFragment implements Edit
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.floating);
+        FloatingActionButton fab = (FloatingActionButton)view.findViewById(R.id.floating);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,6 +95,7 @@ public class MentionsTimelineFragment extends TweetsListFragment implements Edit
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                 addAll(Tweet.fromJSONArray(json));
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override

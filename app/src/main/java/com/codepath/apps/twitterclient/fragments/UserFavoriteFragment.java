@@ -2,6 +2,7 @@ package com.codepath.apps.twitterclient.fragments;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.View;
 import android.widget.Toast;
 
 import com.codepath.apps.twitterclient.R;
@@ -61,6 +62,7 @@ public class UserFavoriteFragment extends TweetsListFragment {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                 addAll(Tweet.fromJSONArray(json));
+                progressBar.setVisibility(View.GONE);
             }
 
             @Override
