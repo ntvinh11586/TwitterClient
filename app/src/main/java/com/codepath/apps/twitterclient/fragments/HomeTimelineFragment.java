@@ -1,4 +1,4 @@
-package com.codepath.apps.restclienttemplate.fragments;
+package com.codepath.apps.twitterclient.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,11 +8,11 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.Toast;
 
-import com.codepath.apps.restclienttemplate.EditNameDialogFragment;
-import com.codepath.apps.restclienttemplate.R;
-import com.codepath.apps.restclienttemplate.TwitterApplication;
-import com.codepath.apps.restclienttemplate.TwitterClient;
-import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.apps.twitterclient.EditNameDialogFragment;
+import com.codepath.apps.twitterclient.R;
+import com.codepath.apps.twitterclient.TwitterApplication;
+import com.codepath.apps.twitterclient.TwitterClient;
+import com.codepath.apps.twitterclient.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;

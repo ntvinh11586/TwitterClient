@@ -1,4 +1,4 @@
-package com.codepath.apps.restclienttemplate;
+package com.codepath.apps.twitterclient;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,8 +11,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
-import com.codepath.apps.restclienttemplate.fragments.HomeTimelineFragment;
-import com.codepath.apps.restclienttemplate.fragments.MentionsTimelineFragment;
+import com.codepath.apps.twitterclient.fragments.HomeTimelineFragment;
+import com.codepath.apps.twitterclient.fragments.MentionsTimelineFragment;
+import com.codepath.apps.twitterclient.models.User;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONObject;
+import org.parceler.Parcels;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by Vinh on 10/25/2016.
@@ -59,9 +66,22 @@ public class TimelineActivity extends AppCompatActivity /*implements EditNameDia
         }
     }
 
+
     public void onProfileView(MenuItem item) {
-        Intent i = new Intent(this, ProfileActivity.class);
-        startActivity(i);
+
+        TwitterClient client = TwitterApplication.getRestClient();
+        client.getUserInfo(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                User user = User.fromJSON(response);
+
+                Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
+                i.putExtra("user", Parcels.wrap(user));
+                startActivity(i);
+            }
+        });
+
+
     }
 
 

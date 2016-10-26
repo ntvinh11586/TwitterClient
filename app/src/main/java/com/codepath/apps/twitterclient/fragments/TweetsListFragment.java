@@ -1,4 +1,4 @@
-package com.codepath.apps.restclienttemplate.fragments;
+package com.codepath.apps.twitterclient.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,10 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.codepath.apps.restclienttemplate.EndlessRecyclerViewScrollListener;
-import com.codepath.apps.restclienttemplate.R;
-import com.codepath.apps.restclienttemplate.TweetArrayAdapter;
-import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.apps.twitterclient.EndlessRecyclerViewScrollListener;
+import com.codepath.apps.twitterclient.R;
+import com.codepath.apps.twitterclient.TweetArrayAdapter;
+import com.codepath.apps.twitterclient.models.Tweet;
 
 import java.util.ArrayList;
 import java.util.List;

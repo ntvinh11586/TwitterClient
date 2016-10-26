@@ -1,12 +1,13 @@
-package com.codepath.apps.restclienttemplate.models;
+package com.codepath.apps.twitterclient.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
 /**
  * Created by Vinh on 10/25/2016.
  */
-
+@Parcel
 public class User {
 
     private String name;
@@ -63,5 +64,9 @@ public class User {
         return u;
     }
 
+    public User() {
+
+    }
 }
+
 

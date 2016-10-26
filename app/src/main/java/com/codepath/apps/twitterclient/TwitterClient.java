@@ -1,4 +1,4 @@
-package com.codepath.apps.restclienttemplate;
+package com.codepath.apps.twitterclient;
 
 import android.content.Context;
 
@@ -66,6 +66,14 @@ public class TwitterClient extends OAuthBaseClient {
 
 	public void getUserTimeline(String screenName, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/user_timeline.json");
+		RequestParams params = new RequestParams();
+		params.put("count", 10);
+		params.put("screen_name", screenName);
+		getClient().get(apiUrl, params, handler);
+	}
+
+	public void getUserFavorite(String screenName, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("favorites/list.json");
 		RequestParams params = new RequestParams();
 		params.put("count", 10);
 		params.put("screen_name", screenName);
