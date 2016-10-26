@@ -24,8 +24,6 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
 
     private TwitterClient client;
 
-    SwipeRefreshLayout swipeContainer;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,30 +33,25 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
 
     }
 
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        FloatingActionButton a = (FloatingActionButton) view.findViewById(R.id.floating);
-        a.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.floating);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showEditDialog();
             }
         });
-
-
-
     }
 
     public void fetchTimelineAsync(int page) {
-        client.getHomeTimeLine(new JsonHttpResponseHandler() {
+        client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                 refreshAll(Tweet.fromJSONArray(json));
-
-                swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainer);
+                SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainer);
                 swipeContainer.setRefreshing(false);
             }
 
@@ -70,10 +63,7 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
     }
 
     void customLoadMoreDataFromApi(int page) {
-
-        TwitterClient client = TwitterApplication.getRestClient();
-
-        client.getHomeTimeLine(new JsonHttpResponseHandler() {
+        client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                 addAll(Tweet.fromJSONArray(json));
@@ -93,9 +83,8 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
         editNameDialogFragment.show(fm, "fragment_edit_name");
     }
 
-
     private void populateTimeLine() {
-        client.getHomeTimeLine(new JsonHttpResponseHandler() {
+        client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                 addAll(Tweet.fromJSONArray(json));
@@ -108,21 +97,17 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
         }, 1);
     }
 
-
     @Override
     public void onFinishEditDialog(String inputText) {
 
         TwitterClient client;
-
         client = TwitterApplication.getRestClient();
-
         client.setNewTweet(new JsonHttpResponseHandler(), inputText);
 
-        // mistery
         for (int i = 0; i < 500000000; i++) {
-        }
+        } // loop for true results
 
-        client.getHomeTimeLine(new JsonHttpResponseHandler() {
+        client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                 refreshAll(Tweet.fromJSONArray(json));
@@ -133,9 +118,7 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
                 Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
             }
         }, 1);
-
     }
-
 
 }
 

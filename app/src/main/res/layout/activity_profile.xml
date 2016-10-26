@@ -23,7 +23,8 @@
         <ImageView
             android:layout_width="75dp"
             android:layout_height="75dp"
-            android:id="@+id/ivProfileImage" />
+            android:id="@+id/ivProfileImage"
+            android:layout_margin="8dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -31,52 +32,20 @@
             android:id="@+id/tvFullname"
             android:text="Name"
             android:layout_alignParentTop="true"
-            android:layout_alignLeft="@+id/tvTagline"
-            android:layout_alignStart="@+id/tvTagline" />
+            android:layout_toRightOf="@+id/ivProfileImage"
+            android:layout_toEndOf="@+id/ivProfileImage" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tvTagline"
             android:text="Tagline"
+            android:maxLines="2"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/ivProfileImage"
             android:layout_toEndOf="@+id/ivProfileImage" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/llCounts"
-            android:orientation="horizontal"
-            android:layout_alignBottom="@+id/ivProfileImage"
-            android:layout_toRightOf="@+id/ivProfileImage"
-            android:layout_toEndOf="@+id/ivProfileImage">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tvFollowers"
-                android:text="5 Followers" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:text="5 following"
-                android:id="@+id/tvFollowings" />
-
-        </LinearLayout>
-
     </RelativeLayout>
-
-
-    <!--<FrameLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_below="@+id/relativeLayout"-->
-    <!--android:layout_alignParentLeft="true"-->
-    <!--android:layout_alignParentStart="true"-->
-    <!--android:id="@+id/flContainer"></FrameLayout>-->
 
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/tabs"
@@ -84,7 +53,7 @@
         app:pstsTextAllCaps="true"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_below="@+id/relativeLayout"
+        android:layout_below="@+id/llCounts"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -94,5 +63,30 @@
         android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:layout_below="@+id/tabs" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/llCounts"
+        android:orientation="horizontal"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="4dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvFollowers"
+            android:text="5 Followers" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="5 following"
+            android:id="@+id/tvFollowings" />
+
+    </LinearLayout>
 
 </RelativeLayout>

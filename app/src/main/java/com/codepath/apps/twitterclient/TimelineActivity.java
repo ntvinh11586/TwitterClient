@@ -32,18 +32,14 @@ public class TimelineActivity extends AppCompatActivity /*implements EditNameDia
         setContentView(R.layout.activity_timeline);
 
         ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
-
         vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
 
         PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-
         tabStrip.setViewPager(vpPager);
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_timeline, menu);
         return true;
     }
@@ -52,10 +48,7 @@ public class TimelineActivity extends AppCompatActivity /*implements EditNameDia
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.miCompose:
-
-
 //                client.clearAccessToken(); chua sua
-
                 Intent i = new Intent(this, LoginActivity.class);
                 startActivity(i);
                 finish();
@@ -68,7 +61,6 @@ public class TimelineActivity extends AppCompatActivity /*implements EditNameDia
 
 
     public void onProfileView(MenuItem item) {
-
         TwitterClient client = TwitterApplication.getRestClient();
         client.getUserInfo(new JsonHttpResponseHandler() {
             @Override
@@ -80,8 +72,6 @@ public class TimelineActivity extends AppCompatActivity /*implements EditNameDia
                 startActivity(i);
             }
         });
-
-
     }
 
 

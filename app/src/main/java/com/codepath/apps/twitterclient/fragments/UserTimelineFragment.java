@@ -19,17 +19,47 @@ public class UserTimelineFragment extends TweetsListFragment {
 
     private TwitterClient client;
 
+    public static UserTimelineFragment newInstance(String screen_name) {
+        UserTimelineFragment userFragment = new UserTimelineFragment();
+        Bundle args = new Bundle();
+        args.putString("screen_name", screen_name);
+        userFragment.setArguments(args);
+        return userFragment;
+    }
+
     @Override
     public void fetchTimelineAsync(int page) {
-        Toast.makeText(getActivity(), "fetchTimelineAsync - profile", Toast.LENGTH_SHORT).show();
+        String screenName = getArguments().getString("screen_name");
 
-        swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainer);
-        swipeContainer.setRefreshing(false);
+        client.getUserTimeline(screenName, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
+                refreshAll(Tweet.fromJSONArray(json));
+                SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainer);
+                swipeContainer.setRefreshing(false);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
+            }
+        }, 1);
     }
 
     @Override
     void customLoadMoreDataFromApi(int page) {
-        Toast.makeText(getActivity(), "customLoadMoreDataFromApi - profile", Toast.LENGTH_SHORT).show();
+        String screenName = getArguments().getString("screen_name");
+        client.getUserTimeline(screenName, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
+                addAll(Tweet.fromJSONArray(json));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
+            }
+        }, page + 1);
     }
 
     @Override
@@ -38,14 +68,6 @@ public class UserTimelineFragment extends TweetsListFragment {
 
         client = TwitterApplication.getRestClient();
         populateTimeLine();
-    }
-
-    public static UserTimelineFragment newInstance(String screen_name) {
-        UserTimelineFragment userFragment = new UserTimelineFragment();
-        Bundle args = new Bundle();
-        args.putString("screen_name", screen_name);
-        userFragment.setArguments(args);
-        return userFragment;
     }
 
     private void populateTimeLine() {
@@ -61,7 +83,7 @@ public class UserTimelineFragment extends TweetsListFragment {
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
             }
-        });
+        }, 1);
     }
 
 

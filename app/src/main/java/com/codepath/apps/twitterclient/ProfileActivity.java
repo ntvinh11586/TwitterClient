@@ -1,11 +1,16 @@
 package com.codepath.apps.twitterclient;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,8 +32,9 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        user = (User) Parcels.unwrap(getIntent().getParcelableExtra("user"));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        user = (User) Parcels.unwrap(getIntent().getParcelableExtra("user"));
         populateProfileHeader(user);
 
         ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
@@ -81,6 +87,30 @@ public class ProfileActivity extends AppCompatActivity {
         tvFollowers.setText(user.getFollowersCount() + " Followers");
         tvFollowing.setText(user.getFollowingsCount() + " Following");
         Picasso.with(this).load(user.getProfileImageUrl()).into(ivProfileImage);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_profile, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent upIntent = NavUtils.getParentActivityIntent(this);
+                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+                    TaskStackBuilder.create(this)
+                            .addNextIntentWithParentStack(upIntent)
+                            .startActivities();
+                } else {
+                    NavUtils.navigateUpTo(this, upIntent);
+                }
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 

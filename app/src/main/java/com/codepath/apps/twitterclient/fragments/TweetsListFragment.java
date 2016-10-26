@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.codepath.apps.twitterclient.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.twitterclient.R;
@@ -28,13 +27,14 @@ public abstract class TweetsListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_tweets_list, parent, false);
+        View view = inflater.inflate(R.layout.fragment_tweets_list, parent, false);
 
-        rvTweets = (RecyclerView) v.findViewById(R.id.lvTweets);
+        rvTweets = (RecyclerView) view.findViewById(R.id.lvTweets);
         rvTweets.setAdapter(aTweets);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         rvTweets.setLayoutManager(linearLayoutManager);
+
         rvTweets.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
@@ -42,8 +42,7 @@ public abstract class TweetsListFragment extends Fragment {
             }
         });
 
-        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
-
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -56,7 +55,7 @@ public abstract class TweetsListFragment extends Fragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-        return v;
+        return view;
     }
 
     abstract public void fetchTimelineAsync(int page);
@@ -77,7 +76,6 @@ public abstract class TweetsListFragment extends Fragment {
     }
 
     public void refreshAll(List<Tweet> t) {
-        Toast.makeText(getActivity(), "normal", Toast.LENGTH_SHORT).show();
         tweets.clear();
         tweets.addAll(t);
         aTweets.notifyDataSetChanged();

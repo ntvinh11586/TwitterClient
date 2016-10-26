@@ -43,7 +43,11 @@
         <activity
             android:name="com.codepath.apps.twitterclient.TimelineActivity"
             android:label="Home Timeline" />
-        <activity android:name="com.codepath.apps.twitterclient.ProfileActivity"></activity>
+        <activity android:name=".ProfileActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.codepath.apps.twitterclient.TimelineActivity" />
+        </activity>
     </application>
 
 </manifest>

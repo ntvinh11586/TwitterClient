@@ -31,22 +31,12 @@ public class TweetArrayAdapter extends RecyclerView.Adapter<TweetArrayAdapter.Vi
         public TextView tvTimestamp;
 
         public ViewHolder(final View itemView) {
-
             super(itemView);
 
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
             tvUsername = (TextView) itemView.findViewById(R.id.tvUserName);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvTimestamp = (TextView) itemView.findViewById(R.id.tvTimestamp);
-
-//            ivProfileImage.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Intent i = new Intent(itemView.getContext(), ProfileActivity.class);
-//                    itemView.getContext().startActivity(i);
-//                }
-//            });
-
         }
     }
 
@@ -67,9 +57,7 @@ public class TweetArrayAdapter extends RecyclerView.Adapter<TweetArrayAdapter.Vi
     public TweetArrayAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-
         View tweetView = inflater.inflate(R.layout.item_tweet, parent, false);
-
         ViewHolder viewHolder = new ViewHolder(tweetView);
 
         return viewHolder;
@@ -95,15 +83,10 @@ public class TweetArrayAdapter extends RecyclerView.Adapter<TweetArrayAdapter.Vi
         ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getContext(), ProfileActivity.class);
-
                 User user = tweet.getUser();
 
+                Intent i = new Intent(getContext(), ProfileActivity.class);
                 i.putExtra("user", Parcels.wrap(user));
-
-//                i.putExtra("screen_name", user.getScreenName());
-//
-
                 getContext().startActivity(i);
             }
         });
