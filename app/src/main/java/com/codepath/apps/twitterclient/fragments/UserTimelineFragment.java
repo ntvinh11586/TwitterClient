@@ -3,8 +3,8 @@ package com.codepath.apps.twitterclient.fragments;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
-import android.widget.Toast;
 
+import com.codepath.apps.twitterclient.NetworkHelper;
 import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.TwitterApplication;
 import com.codepath.apps.twitterclient.TwitterClient;
@@ -35,14 +35,15 @@ public class UserTimelineFragment extends TweetsListFragment {
         client.getUserTimeline(screenName, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                refreshAll(Tweet.fromJSONArray(json));
+                refreshAll(Tweet.fromJSONArray(json, "none"));
                 SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainer);
                 swipeContainer.setRefreshing(false);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
+                NetworkHelper.showFailureMessage(getActivity(), errorResponse);
+                swipeContainer.setRefreshing(false);
             }
         }, 1);
     }
@@ -53,13 +54,14 @@ public class UserTimelineFragment extends TweetsListFragment {
         client.getUserTimeline(screenName, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                addAll(Tweet.fromJSONArray(json));
+                addAll(Tweet.fromJSONArray(json, "none"));
                 progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
+                NetworkHelper.showFailureMessage(getActivity(), errorResponse);
+                progressBar.setVisibility(View.GONE);
             }
         }, page + 1);
     }
@@ -78,12 +80,12 @@ public class UserTimelineFragment extends TweetsListFragment {
         client.getUserTimeline(screenName, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                addAll(Tweet.fromJSONArray(json));
+                addAll(Tweet.fromJSONArray(json, "none"));
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
+                NetworkHelper.showFailureMessage(getActivity(), errorResponse);
             }
         }, 1);
     }

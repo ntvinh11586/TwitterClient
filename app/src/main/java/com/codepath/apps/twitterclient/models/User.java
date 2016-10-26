@@ -1,21 +1,36 @@
 package com.codepath.apps.twitterclient.models;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+import com.codepath.apps.twitterclient.Constants;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.parceler.Parcel;
+
+import java.io.Serializable;
 
 /**
  * Created by Vinh on 10/25/2016.
  */
-@Parcel
-public class User {
+@Table(name = "Users")
+public class User extends Model implements Serializable {
 
-    private String name;
+    @Column(name = "userid", unique = true)
+    private long id;
+    @Column(name = "uid")
     private long uid;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "screenName")
     private String screenName;
+    @Column(name = "profileImageUrl")
     private String profileImageUrl;
+    @Column(name = "tagline")
     private String tagline;
+    @Column(name = "followersCount")
     private int followersCount;
+    @Column(name = "followingsCount")
     private int followingsCount;
 
     public String getName() {
@@ -38,6 +53,10 @@ public class User {
         return tagline;
     }
 
+    public User() {
+        super();
+    }
+
     public int getFollowersCount() {
         return followersCount;
     }
@@ -48,8 +67,8 @@ public class User {
 
     public static User fromJSON(JSONObject json) {
         User u = new User();
-
         try {
+            u.id = ++Constants.userId;
             u.name = json.getString("name");
             u.uid = json.getLong("id");
             u.screenName = json.getString("screen_name");
@@ -60,12 +79,9 @@ public class User {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        u.save();
 
         return u;
-    }
-
-    public User() {
-
     }
 }
 

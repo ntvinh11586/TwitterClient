@@ -1,6 +1,8 @@
 package com.codepath.apps.twitterclient.fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
@@ -8,7 +10,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.Toast;
 
+import com.activeandroid.util.SQLiteUtils;
 import com.codepath.apps.twitterclient.EditNameDialogFragment;
+import com.codepath.apps.twitterclient.NetworkHelper;
 import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.TwitterApplication;
 import com.codepath.apps.twitterclient.TwitterClient;
@@ -29,7 +33,22 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         client = TwitterApplication.getRestClient();
-        populateTimeLine();
+
+        if (NetworkHelper.isOnline()) {
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            if (pref.getBoolean("username", true)) {
+                SQLiteUtils.execSql("DELETE FROM Tweets");
+                SQLiteUtils.execSql("DELETE FROM Users");
+            }
+
+            populateTimeLine();
+//            SharedPreferences.Editor edit = pref.edit();
+//            edit.putBoolean("existData", true);
+//            edit.commit();
+        } else {
+            tweets.addAll(Tweet.getAll("home"));
+            aTweets.notifyDataSetChanged();
+        }
 
     }
 
@@ -50,14 +69,15 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                refreshAll(Tweet.fromJSONArray(json));
+                refreshAll(Tweet.fromJSONArray(json, "home"));
                 SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainer);
                 swipeContainer.setRefreshing(false);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
+                NetworkHelper.showFailureMessage(getActivity(), errorResponse);
+                swipeContainer.setRefreshing(false);
             }
         }, 1);
     }
@@ -67,15 +87,17 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                addAll(Tweet.fromJSONArray(json));
+                addAll(Tweet.fromJSONArray(json, "home"));
                 progressBar.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
+                NetworkHelper.showFailureMessage(getActivity(), errorResponse);
+                progressBar.setVisibility(View.GONE);
             }
         }, page + 1);
+
     }
 
     private void showEditDialog() {
@@ -86,18 +108,24 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
     }
 
     private void populateTimeLine() {
-        client.getHomeTimeline(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                addAll(Tweet.fromJSONArray(json));
-            }
+        if (NetworkHelper.isOnline()) {
+            client.getHomeTimeline(new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
+                    addAll(Tweet.fromJSONArray(json, "home"));
+                }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
-            }
-        }, 1);
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    NetworkHelper.showFailureMessage(getActivity(), errorResponse);
+                }
+            }, 1);
+        } else {
+            Toast.makeText(getActivity(), "Offline", Toast.LENGTH_SHORT).show();
+        }
     }
+
+
 
     @Override
     public void onFinishEditDialog(String inputText) {
@@ -111,12 +139,12 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                refreshAll(Tweet.fromJSONArray(json));
+                refreshAll(Tweet.fromJSONArray(json, "home"));
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Toast.makeText(getActivity(), "fail", Toast.LENGTH_SHORT).show();
+                NetworkHelper.showFailureMessage(getActivity(), errorResponse);
             }
         }, 1);
     }

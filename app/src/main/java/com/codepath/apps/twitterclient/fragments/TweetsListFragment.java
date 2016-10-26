@@ -9,8 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.codepath.apps.twitterclient.EndlessRecyclerViewScrollListener;
+import com.codepath.apps.twitterclient.NetworkHelper;
 import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.TweetArrayAdapter;
 import com.codepath.apps.twitterclient.models.Tweet;
@@ -53,8 +55,12 @@ public abstract class TweetsListFragment extends Fragment {
 
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                progressBar.setVisibility(View.VISIBLE);
-                customLoadMoreDataFromApi(page);
+                if (NetworkHelper.isOnline()) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    customLoadMoreDataFromApi(page);
+                } else {
+                    Toast.makeText(getActivity(), "Offline", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -62,8 +68,12 @@ public abstract class TweetsListFragment extends Fragment {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                progressBar.setVisibility(View.VISIBLE);
-                fetchTimelineAsync(0);
+                if (NetworkHelper.isOnline()) {
+                    fetchTimelineAsync(0);
+                } else {
+                    Toast.makeText(getActivity(), "Offline", Toast.LENGTH_SHORT).show();
+                    swipeContainer.setRefreshing(false);
+                }
             }
         });
 

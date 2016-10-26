@@ -20,8 +20,6 @@ import com.codepath.apps.twitterclient.fragments.UserTimelineFragment;
 import com.codepath.apps.twitterclient.models.User;
 import com.squareup.picasso.Picasso;
 
-import org.parceler.Parcels;
-
 public class ProfileActivity extends AppCompatActivity {
 
     TwitterClient client;
@@ -34,18 +32,18 @@ public class ProfileActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        user = (User) Parcels.unwrap(getIntent().getParcelableExtra("user"));
+        user = (User) getIntent().getSerializableExtra("user");
         populateProfileHeader(user);
 
         ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
         vpPager.setAdapter(new UserPagerAdapter(getSupportFragmentManager()));
-        PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip)findViewById(R.id.tabs);
         tabStrip.setViewPager(vpPager);
     }
 
     public class UserPagerAdapter extends FragmentPagerAdapter {
         final int PAGE_COUNT = 2;
-        private String tabTitles[] = {"Post", "Favorites"};
+        private String tabTitles[] = {"Post", "Favorites" };
 
         public UserPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -53,7 +51,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            if (position == 0) {
+            if (position == 0){
                 UserTimelineFragment fragmentUserTimeline = UserTimelineFragment.newInstance(user.getScreenName());
                 return fragmentUserTimeline;
             } else if (position == 1) {
@@ -76,11 +74,11 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void populateProfileHeader(User user) {
-        TextView tvName = (TextView) findViewById(R.id.tvFullname);
-        TextView tvTagline = (TextView) findViewById(R.id.tvTagline);
-        TextView tvFollowers = (TextView) findViewById(R.id.tvFollowers);
-        TextView tvFollowing = (TextView) findViewById(R.id.tvFollowings);
-        ImageView ivProfileImage = (ImageView) findViewById(R.id.ivProfileImage);
+        TextView tvName = (TextView)findViewById(R.id.tvFullname);
+        TextView tvTagline = (TextView)findViewById(R.id.tvTagline);
+        TextView tvFollowers = (TextView)findViewById(R.id.tvFollowers);
+        TextView tvFollowing = (TextView)findViewById(R.id.tvFollowings);
+        ImageView ivProfileImage = (ImageView)findViewById(R.id.ivProfileImage);
 
         tvName.setText(user.getName());
         tvTagline.setText(user.getTagline());

@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.activeandroid.ActiveAndroid;
 import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.twitterclient.fragments.HomeTimelineFragment;
 import com.codepath.apps.twitterclient.fragments.MentionsTimelineFragment;
@@ -17,7 +18,6 @@ import com.codepath.apps.twitterclient.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONObject;
-import org.parceler.Parcels;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -30,11 +30,14 @@ public class TimelineActivity extends AppCompatActivity /*implements EditNameDia
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
+        ActiveAndroid.initialize(this);
+
+
 
         ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
         vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
 
-        PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip)findViewById(R.id.tabs);
         tabStrip.setViewPager(vpPager);
     }
 
@@ -68,7 +71,7 @@ public class TimelineActivity extends AppCompatActivity /*implements EditNameDia
                 User user = User.fromJSON(response);
 
                 Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
-                i.putExtra("user", Parcels.wrap(user));
+                i.putExtra("user", user);
                 startActivity(i);
             }
         });
@@ -77,7 +80,7 @@ public class TimelineActivity extends AppCompatActivity /*implements EditNameDia
 
     public class TweetsPagerAdapter extends FragmentPagerAdapter {
         final int PAGE_COUNT = 2;
-        private String tabTitles[] = {"Home", "Mentions"};
+        private String tabTitles[] = {"Home", "Mentions" };
 
         public TweetsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -85,7 +88,7 @@ public class TimelineActivity extends AppCompatActivity /*implements EditNameDia
 
         @Override
         public Fragment getItem(int position) {
-            if (position == 0) {
+            if (position == 0){
                 return new HomeTimelineFragment();
             } else if (position == 1) {
                 return new MentionsTimelineFragment();

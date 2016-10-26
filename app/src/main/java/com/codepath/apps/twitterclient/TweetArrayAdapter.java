@@ -13,8 +13,6 @@ import com.codepath.apps.twitterclient.models.Tweet;
 import com.codepath.apps.twitterclient.models.User;
 import com.squareup.picasso.Picasso;
 
-import org.parceler.Parcels;
-
 import java.util.List;
 
 /**
@@ -33,7 +31,7 @@ public class TweetArrayAdapter extends RecyclerView.Adapter<TweetArrayAdapter.Vi
         public ViewHolder(final View itemView) {
             super(itemView);
 
-            ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
+            ivProfileImage = (ImageView)itemView.findViewById(R.id.ivProfileImage);
             tvUsername = (TextView) itemView.findViewById(R.id.tvUserName);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvTimestamp = (TextView) itemView.findViewById(R.id.tvTimestamp);
@@ -86,7 +84,7 @@ public class TweetArrayAdapter extends RecyclerView.Adapter<TweetArrayAdapter.Vi
                 User user = tweet.getUser();
 
                 Intent i = new Intent(getContext(), ProfileActivity.class);
-                i.putExtra("user", Parcels.wrap(user));
+                i.putExtra("user", user);
                 getContext().startActivity(i);
             }
         });
