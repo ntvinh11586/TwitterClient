@@ -4,7 +4,7 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
-import com.codepath.apps.twitterclient.Constants;
+import com.codepath.apps.twitterclient.unities.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,7 +19,7 @@ import java.util.List;
 @Table(name = "Tweets")
 public class Tweet extends Model {
 
-    @Column (name = "tweetid", unique = true)
+    @Column(name = "tweetid", unique = true)
     private long id;
     @Column(name = "uid")
     private long uid;

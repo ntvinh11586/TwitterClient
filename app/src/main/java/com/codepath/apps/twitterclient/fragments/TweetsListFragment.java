@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.codepath.apps.twitterclient.EndlessRecyclerViewScrollListener;
-import com.codepath.apps.twitterclient.NetworkHelper;
+import com.codepath.apps.twitterclient.unities.EndlessRecyclerViewScrollListener;
+import com.codepath.apps.twitterclient.unities.NetworkHelper;
 import com.codepath.apps.twitterclient.R;
-import com.codepath.apps.twitterclient.TweetArrayAdapter;
+import com.codepath.apps.twitterclient.adapters.TweetArrayAdapter;
 import com.codepath.apps.twitterclient.models.Tweet;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public abstract class TweetsListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tweets_list, parent, false);
 
-        rvTweets = (RecyclerView)view.findViewById(R.id.lvTweets);
+        rvTweets = (RecyclerView) view.findViewById(R.id.list_tweets);
         rvTweets.setAdapter(aTweets);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -82,7 +82,7 @@ public abstract class TweetsListFragment extends Fragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-        progressBar = (ProgressBar)view.findViewById(R.id.pbLoading);
+        progressBar = (ProgressBar) view.findViewById(R.id.progress_loading);
 
         return view;
     }

@@ -1,4 +1,4 @@
-package com.codepath.apps.twitterclient;
+package com.codepath.apps.twitterclient.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,11 +13,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.codepath.apps.twitterclient.R;
+
 /**
  * Created by Vinh on 10/25/2016.
  */
 
-public class EditNameDialogFragment extends DialogFragment {
+public class CreateTweetDialogFragment extends DialogFragment {
 
     private EditText mEditText;
     private TextView tvNumber;
@@ -28,12 +30,12 @@ public class EditNameDialogFragment extends DialogFragment {
     }
 
 
-    public EditNameDialogFragment() {
+    public CreateTweetDialogFragment() {
 
     }
 
-    public static EditNameDialogFragment newInstance(String title) {
-        EditNameDialogFragment frag = new EditNameDialogFragment();
+    public static CreateTweetDialogFragment newInstance(String title) {
+        CreateTweetDialogFragment frag = new CreateTweetDialogFragment();
         Bundle args = new Bundle();
         args.putString("title", title);
         frag.setArguments(args);
@@ -43,7 +45,7 @@ public class EditNameDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_edit_name, container);
+        return inflater.inflate(R.layout.fragment_add_tweet, container);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.codepath.apps.twitterclient;
+package com.codepath.apps.twitterclient.unities;
 
 public class Constants {
     public static long tweetId = 0;

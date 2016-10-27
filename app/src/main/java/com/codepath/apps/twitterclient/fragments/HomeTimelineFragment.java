@@ -11,11 +11,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.activeandroid.util.SQLiteUtils;
-import com.codepath.apps.twitterclient.EditNameDialogFragment;
-import com.codepath.apps.twitterclient.NetworkHelper;
+import com.codepath.apps.twitterclient.unities.NetworkHelper;
 import com.codepath.apps.twitterclient.R;
-import com.codepath.apps.twitterclient.TwitterApplication;
-import com.codepath.apps.twitterclient.TwitterClient;
+import com.codepath.apps.twitterclient.networks.TwitterApplication;
+import com.codepath.apps.twitterclient.networks.TwitterClient;
 import com.codepath.apps.twitterclient.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -24,7 +23,7 @@ import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
-public class HomeTimelineFragment extends TweetsListFragment implements EditNameDialogFragment.EditNameDialogListener  {
+public class HomeTimelineFragment extends TweetsListFragment implements CreateTweetDialogFragment.EditNameDialogListener {
 
     private TwitterClient client;
 
@@ -40,12 +39,9 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
                 SQLiteUtils.execSql("DELETE FROM Tweets");
                 SQLiteUtils.execSql("DELETE FROM Users");
             }
-
             populateTimeLine();
-//            SharedPreferences.Editor edit = pref.edit();
-//            edit.putBoolean("existData", true);
-//            edit.commit();
         } else {
+            Toast.makeText(getContext(), "Offline mode", Toast.LENGTH_SHORT).show();
             tweets.addAll(Tweet.getAll("home"));
             aTweets.notifyDataSetChanged();
         }
@@ -56,7 +52,7 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        FloatingActionButton fab = (FloatingActionButton)view.findViewById(R.id.floating);
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.floating);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,9 +98,9 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
 
     private void showEditDialog() {
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        EditNameDialogFragment editNameDialogFragment = EditNameDialogFragment.newInstance("Some Title");
+        CreateTweetDialogFragment editNameDialogFragment = CreateTweetDialogFragment.newInstance("Some Title");
         editNameDialogFragment.setTargetFragment(this, 1);
-        editNameDialogFragment.show(fm, "fragment_edit_name");
+        editNameDialogFragment.show(fm, "fragment_add_tweet");
     }
 
     private void populateTimeLine() {
@@ -126,7 +122,6 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
     }
 
 
-
     @Override
     public void onFinishEditDialog(String inputText) {
 
@@ -134,7 +129,8 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
         client = TwitterApplication.getRestClient();
         client.setNewTweet(new JsonHttpResponseHandler(), inputText);
 
-        for (int i = 0; i < 500000000; i++) {} // loop for true results
+        for (int i = 0; i < 200000000; i++) {
+        } // loop for true results
 
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
@@ -150,4 +146,6 @@ public class HomeTimelineFragment extends TweetsListFragment implements EditName
     }
 
 }
+
+
 

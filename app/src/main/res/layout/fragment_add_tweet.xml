@@ -3,42 +3,48 @@
     android:id="@+id/edit_name"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="8dp">
 
     <TextView
-        android:text="Your Tweets"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/textView" />
+        android:layout_alignParentTop="true"
+        android:layout_margin="4dp"
+        android:text="Your Tweets"
+        android:textSize="18dp"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/edit_tweet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text"
-        android:imeOptions="actionDone"
         android:layout_below="@+id/textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_margin="4dp"
+        android:inputType="textMultiLine" />
 
     <TextView
+        android:id="@+id/text_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="140"
-        android:id="@+id/text_number"
-        android:layout_below="@+id/edit_tweet"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/edit_tweet"
+        android:layout_margin="4dp"
+        android:text="140" />
 
     <Button
+        android:id="@+id/button_tweet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tweet"
-        android:id="@+id/button_tweet"
-        android:layout_alignTop="@+id/text_number"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignTop="@+id/text_number"
+        android:layout_margin="4dp"
+        android:background="@color/colorPrimaryDark"
+        android:text="Tweet"
+        android:textColor="@android:color/white" />
 </RelativeLayout>

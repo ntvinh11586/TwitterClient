@@ -1,15 +1,13 @@
-package com.codepath.apps.twitterclient;
+package com.codepath.apps.twitterclient.networks;
 
-import android.app.Application;
 import android.content.Context;
 
-public class TwitterApplication extends Application {
+public class TwitterApplication extends com.activeandroid.app.Application {
 	private static Context context;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-
 		TwitterApplication.context = this;
 	}
 

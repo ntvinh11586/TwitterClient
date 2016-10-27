@@ -1,4 +1,4 @@
-package com.codepath.apps.twitterclient;
+package com.codepath.apps.twitterclient.networks;
 
 import android.content.Context;
 
@@ -40,7 +40,7 @@ public class TwitterClient extends OAuthBaseClient {
 		params.put("count", 10);
 		params.put("since_id", 1);
 		params.put("page", page);
-		getClient().setMaxRetriesAndTimeout(0, 20000);
+
 		getClient().get(apiUrl, params, handler);
 	}
 

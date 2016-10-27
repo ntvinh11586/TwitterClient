@@ -3,7 +3,7 @@ package com.codepath.apps.twitterclient.models;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-import com.codepath.apps.twitterclient.Constants;
+import com.codepath.apps.twitterclient.unities.Constants;
 
 import org.json.JSONException;
 import org.json.JSONObject;

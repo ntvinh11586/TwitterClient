@@ -1,4 +1,4 @@
-package com.codepath.apps.twitterclient;
+package com.codepath.apps.twitterclient.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,6 +7,8 @@ import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.View;
 
+import com.codepath.apps.twitterclient.R;
+import com.codepath.apps.twitterclient.networks.TwitterClient;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
 
 public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
