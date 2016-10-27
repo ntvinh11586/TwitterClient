@@ -12,7 +12,7 @@
         <include layout="@layout/content_tweets_list" />
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/floating"
+            android:id="@+id/fabAddTweet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"

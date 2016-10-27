@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".activities.ProfileActivity">
 
-
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
@@ -17,37 +16,37 @@
         android:layout_alignParentTop="true">
 
         <ImageView
-            android:id="@+id/image_profile"
+            android:id="@+id/ivProfile"
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_margin="8dp" />
 
         <TextView
-            android:id="@+id/text_fullname"
+            android:id="@+id/tvFullname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/image_profile"
+            android:layout_alignTop="@+id/ivProfile"
             android:layout_margin="4dp"
-            android:layout_toEndOf="@+id/image_profile"
-            android:layout_toRightOf="@+id/image_profile"
+            android:layout_toEndOf="@+id/ivProfile"
+            android:layout_toRightOf="@+id/ivProfile"
             android:text="Name"
             android:textSize="20dp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/text_tag_line"
+            android:id="@+id/tvTagLine"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/text_fullname"
-            android:layout_alignStart="@+id/text_fullname"
-            android:layout_below="@+id/text_fullname"
+            android:layout_alignLeft="@+id/tvFullname"
+            android:layout_alignStart="@+id/tvFullname"
+            android:layout_below="@+id/tvFullname"
             android:maxLines="2"
             android:text="Tagline" />
 
     </RelativeLayout>
 
     <com.astuetz.PagerSlidingTabStrip
-        android:id="@+id/tabstrip"
+        android:id="@+id/tabStrip"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_alignParentLeft="true"
@@ -58,10 +57,10 @@
         app:pstsTextAllCaps="true" />
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tabstrip"
+        android:layout_below="@+id/tabStrip"
         android:background="@android:color/white" />
 
     <LinearLayout
@@ -75,7 +74,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/text_follower"
+            android:id="@+id/tvFollower"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
@@ -83,7 +82,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/text_following"
+            android:id="@+id/tvFollowing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"

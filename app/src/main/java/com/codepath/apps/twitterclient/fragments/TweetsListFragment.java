@@ -32,6 +32,7 @@ public abstract class TweetsListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //// TODO: 10/27/2016 refactory
         tweets = new ArrayList<>();
         aTweets = new TweetArrayAdapter(getActivity(), tweets);
     }
@@ -40,18 +41,13 @@ public abstract class TweetsListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tweets_list, parent, false);
 
-        rvTweets = (RecyclerView) view.findViewById(R.id.list_tweets);
-        rvTweets.setAdapter(aTweets);
+        progressBar = (ProgressBar) view.findViewById(R.id.pbLoading);
 
+        rvTweets = (RecyclerView) view.findViewById(R.id.rvTweets);
+        rvTweets.setAdapter(aTweets);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         rvTweets.setLayoutManager(linearLayoutManager);
-
         rvTweets.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
-
-            @Override
-            public void onScrolled(RecyclerView view, int dx, int dy) {
-                super.onScrolled(view, dx, dy);
-            }
 
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
@@ -76,21 +72,14 @@ public abstract class TweetsListFragment extends Fragment {
                 }
             }
         });
-
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-
-        progressBar = (ProgressBar) view.findViewById(R.id.progress_loading);
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright);
 
         return view;
     }
 
-    abstract public void fetchTimelineAsync(int page);
+    abstract void fetchTimelineAsync(int page);
 
     abstract void customLoadMoreDataFromApi(int page);
-
 
     public void addAll(List<Tweet> t) {
         tweets.addAll(t);

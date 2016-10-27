@@ -9,11 +9,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.Toast;
 
-import com.codepath.apps.twitterclient.unities.NetworkHelper;
 import com.codepath.apps.twitterclient.R;
+import com.codepath.apps.twitterclient.models.Tweet;
 import com.codepath.apps.twitterclient.networks.TwitterApplication;
 import com.codepath.apps.twitterclient.networks.TwitterClient;
-import com.codepath.apps.twitterclient.models.Tweet;
+import com.codepath.apps.twitterclient.unities.Constants;
+import com.codepath.apps.twitterclient.unities.NetworkHelper;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -21,7 +22,7 @@ import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
-public class MentionsTimelineFragment extends TweetsListFragment implements CreateTweetDialogFragment.EditNameDialogListener {
+public class MentionsTimelineFragment extends TweetsListFragment implements CreateTweetDialogFragment.CreateNewTweetListener {
 
     private TwitterClient client;
 
@@ -32,11 +33,11 @@ public class MentionsTimelineFragment extends TweetsListFragment implements Crea
         client = TwitterApplication.getRestClient();
 
         if (NetworkHelper.isOnline()) {
-            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
             populateTimeLine();
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
             SharedPreferences.Editor edit = pref.edit();
-            edit.putBoolean("existData", true);
-            edit.commit();
+            edit.putBoolean(Constants.EXIST_DATA, true);
+            edit.apply();
         } else {
             Toast.makeText(getContext(), "Offline mode", Toast.LENGTH_SHORT).show();
             tweets.addAll(Tweet.getAll("mention"));
@@ -48,7 +49,7 @@ public class MentionsTimelineFragment extends TweetsListFragment implements Crea
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.floating);
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fabAddTweet);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,13 +60,13 @@ public class MentionsTimelineFragment extends TweetsListFragment implements Crea
 
     private void showEditDialog() {
         FragmentManager fm = getActivity().getSupportFragmentManager();
-        CreateTweetDialogFragment editNameDialogFragment = CreateTweetDialogFragment.newInstance("Some Title");
+        CreateTweetDialogFragment editNameDialogFragment = CreateTweetDialogFragment.newInstance();
         editNameDialogFragment.setTargetFragment(this, 2);
         editNameDialogFragment.show(fm, "fragment_add_tweet");
     }
 
     @Override
-    public void onFinishEditDialog(String inputText) {
+    public void onFinishCreateNewTweet(String inputText) {
         TwitterClient client;
         client = TwitterApplication.getRestClient();
         client.setNewTweet(new JsonHttpResponseHandler(), inputText);

@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.networks.TwitterClient;
+import com.codepath.apps.twitterclient.unities.Constants;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
 
 public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
@@ -31,15 +32,13 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	// i.e Display application "homepage"
 	@Override
 	public void onLoginSuccess() {
-		SharedPreferences pref =
-				PreferenceManager.getDefaultSharedPreferences(this);
-		SharedPreferences.Editor edit = pref.edit();
-		edit.putBoolean("existData", false);
-		edit.commit();
 
-		Intent i = new Intent(this, TimelineActivity.class);
-		startActivity(i);
-//		Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences.Editor edit = pref.edit();
+		edit.putBoolean(Constants.EXIST_DATA, false);
+		edit.apply();
+
+		startActivity(new Intent(this, TimelineActivity.class));
 	}
 
 	// OAuth authentication flow failed, handle the error

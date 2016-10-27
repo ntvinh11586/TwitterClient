@@ -1,14 +1,12 @@
 package com.codepath.apps.twitterclient.fragments;
 
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
-import com.codepath.apps.twitterclient.unities.NetworkHelper;
-import com.codepath.apps.twitterclient.R;
+import com.codepath.apps.twitterclient.models.Tweet;
 import com.codepath.apps.twitterclient.networks.TwitterApplication;
 import com.codepath.apps.twitterclient.networks.TwitterClient;
-import com.codepath.apps.twitterclient.models.Tweet;
+import com.codepath.apps.twitterclient.unities.NetworkHelper;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -19,7 +17,9 @@ import cz.msebera.android.httpclient.Header;
 public class UserTimelineFragment extends TweetsListFragment {
 
     private TwitterClient client;
+    private String screenName;
 
+    // // TODO: 10/27/2016 nen tao 1 lan hay nhieu lan ???
     public static UserTimelineFragment newInstance(String screen_name) {
         UserTimelineFragment userFragment = new UserTimelineFragment();
         Bundle args = new Bundle();
@@ -29,14 +29,20 @@ public class UserTimelineFragment extends TweetsListFragment {
     }
 
     @Override
-    public void fetchTimelineAsync(int page) {
-        String screenName = getArguments().getString("screen_name");
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
+        client = TwitterApplication.getRestClient();
+        screenName = getArguments().getString("screen_name");
+        populateTimeLine();
+    }
+
+    @Override
+    void fetchTimelineAsync(int page) {
         client.getUserTimeline(screenName, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                 refreshAll(Tweet.fromJSONArray(json, "none"));
-                SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainer);
                 swipeContainer.setRefreshing(false);
             }
 
@@ -50,7 +56,6 @@ public class UserTimelineFragment extends TweetsListFragment {
 
     @Override
     void customLoadMoreDataFromApi(int page) {
-        String screenName = getArguments().getString("screen_name");
         client.getUserTimeline(screenName, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
@@ -66,17 +71,8 @@ public class UserTimelineFragment extends TweetsListFragment {
         }, page + 1);
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        client = TwitterApplication.getRestClient();
-        populateTimeLine();
-    }
-
+    // // TODO: 10/27/2016 gop vao chung voi customLoadMoreDataFromApi 
     private void populateTimeLine() {
-        String screenName = getArguments().getString("screen_name");
-
         client.getUserTimeline(screenName, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
@@ -89,6 +85,4 @@ public class UserTimelineFragment extends TweetsListFragment {
             }
         }, 1);
     }
-
-
 }

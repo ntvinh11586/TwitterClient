@@ -29,12 +29,19 @@ public class TwitterClient extends OAuthBaseClient {
 	public static final String REST_CONSUMER_SECRET = "WNZBO7iCtFnYKCA7GVzo2sItQNo966IKCFiv9UCst5vPTXFVlu"; // Change this
 	public static final String REST_CALLBACK_URL = "oauth://cpsimpletweets"; // Change this (here and in manifest)
 
+	private static final String STATUSES_HOME_TIMELINE = "statuses/home_timeline.json";
+	private static final String STATUSES_UPDATE = "statuses/update.json";
+	private static final String STATUSES_MENTIONS_TIMELINE = "statuses/mentions_timeline.json";
+	private static final String STATUSES_USER_TIMELINE = "statuses/user_timeline.json";
+	private static final String FAVORITES_LIST = "favorites/list.json";
+	private static final String ACCOUNT_VERIFY_CREDENTIALS = "account/verify_credentials.json";
+
 	public TwitterClient(Context context) {
 		super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
 	}
 
 	public void getHomeTimeline(AsyncHttpResponseHandler handler, int page) {
-		String apiUrl = getApiUrl("statuses/home_timeline.json");
+		String apiUrl = getApiUrl(STATUSES_HOME_TIMELINE);
 
 		RequestParams params = new RequestParams();
 		params.put("count", 10);
@@ -46,7 +53,7 @@ public class TwitterClient extends OAuthBaseClient {
 
 
 	public void setNewTweet(AsyncHttpResponseHandler handler, String tweet) {
-		String apiUrl = getApiUrl("statuses/update.json");
+		String apiUrl = getApiUrl(STATUSES_UPDATE);
 
 		RequestParams params = new RequestParams();
 		params.put("status", tweet);
@@ -56,7 +63,7 @@ public class TwitterClient extends OAuthBaseClient {
 
 
 	public void getMentionTimeline(JsonHttpResponseHandler handler, int page) {
-		String apiUrl = getApiUrl("statuses/mentions_timeline.json");
+		String apiUrl = getApiUrl(STATUSES_MENTIONS_TIMELINE);
 
 		RequestParams params = new RequestParams();
 		params.put("count", 7);
@@ -66,7 +73,7 @@ public class TwitterClient extends OAuthBaseClient {
 	}
 
 	public void getUserTimeline(String screenName, AsyncHttpResponseHandler handler, int page) {
-		String apiUrl = getApiUrl("statuses/user_timeline.json");
+		String apiUrl = getApiUrl(STATUSES_USER_TIMELINE);
 		RequestParams params = new RequestParams();
 		params.put("count", 7);
 		params.put("screen_name", screenName);
@@ -75,7 +82,7 @@ public class TwitterClient extends OAuthBaseClient {
 	}
 
 	public void getUserFavorite(String screenName, AsyncHttpResponseHandler handler, int page) {
-		String apiUrl = getApiUrl("favorites/list.json");
+		String apiUrl = getApiUrl(FAVORITES_LIST);
 		RequestParams params = new RequestParams();
 		params.put("count", 7);
 		params.put("screen_name", screenName);
@@ -84,7 +91,7 @@ public class TwitterClient extends OAuthBaseClient {
 	}
 
 	public void getUserInfo(AsyncHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("account/verify_credentials.json");
+		String apiUrl = getApiUrl(ACCOUNT_VERIFY_CREDENTIALS);
 		getClient().get(apiUrl, null, handler);
 	}
 }

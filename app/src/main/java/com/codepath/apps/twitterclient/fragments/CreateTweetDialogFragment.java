@@ -25,8 +25,8 @@ public class CreateTweetDialogFragment extends DialogFragment {
     private TextView tvNumber;
     private Button mButton;
 
-    public interface EditNameDialogListener {
-        void onFinishEditDialog(String inputText);
+    public interface CreateNewTweetListener {
+        void onFinishCreateNewTweet(String inputText);
     }
 
 
@@ -34,12 +34,8 @@ public class CreateTweetDialogFragment extends DialogFragment {
 
     }
 
-    public static CreateTweetDialogFragment newInstance(String title) {
-        CreateTweetDialogFragment frag = new CreateTweetDialogFragment();
-        Bundle args = new Bundle();
-        args.putString("title", title);
-        frag.setArguments(args);
-        return frag;
+    public static CreateTweetDialogFragment newInstance() {
+        return new CreateTweetDialogFragment();
     }
 
     @Override
@@ -52,10 +48,10 @@ public class CreateTweetDialogFragment extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        tvNumber = (TextView) view.findViewById(R.id.text_number);
+        tvNumber = (TextView) view.findViewById(R.id.tvAvailableCharacters);
         tvNumber.setTextColor(ContextCompat.getColor(getContext(), android.R.color.holo_green_light));
-        mEditText = (EditText) view.findViewById(R.id.edit_tweet);
-        mButton = (Button) view.findViewById(R.id.button_tweet);
+        mEditText = (EditText) view.findViewById(R.id.etTweet);
+        mButton = (Button) view.findViewById(R.id.btnTweet);
 
         mEditText.requestFocus();
         mEditText.addTextChangedListener(new TextWatcher() {
@@ -68,11 +64,14 @@ public class CreateTweetDialogFragment extends DialogFragment {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 int currentTextSize = mEditText.getText().toString().length();
 
+                // // TODO: 10/27/2016 refactor after
                 if (140 - currentTextSize >= 0) {
-                    tvNumber.setTextColor(ContextCompat.getColor(getContext(), android.R.color.holo_green_light));
+                    tvNumber.setTextColor(ContextCompat.getColor(getContext(),
+                            android.R.color.holo_green_light));
                     mButton.setEnabled(true);
                 } else {
-                    tvNumber.setTextColor(ContextCompat.getColor(getContext(), android.R.color.holo_red_light));
+                    tvNumber.setTextColor(ContextCompat.getColor(getContext(),
+                            android.R.color.holo_red_light));
                     mButton.setEnabled(false);
                 }
                 tvNumber.setText(String.valueOf(140 - currentTextSize));
@@ -87,8 +86,8 @@ public class CreateTweetDialogFragment extends DialogFragment {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditNameDialogListener listener = (EditNameDialogListener) getTargetFragment();
-                listener.onFinishEditDialog(mEditText.getText().toString());
+                ((CreateNewTweetListener) getTargetFragment())
+                        .onFinishCreateNewTweet(mEditText.getText().toString());
                 dismiss();
             }
         });

@@ -5,7 +5,7 @@
     android:layout_margin="8dp">
 
     <ImageView
-        android:id="@+id/image_profile"
+        android:id="@+id/ivProfile"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_alignParentLeft="true"
@@ -18,29 +18,29 @@
         android:background="#be5050" />
 
     <TextView
-        android:id="@+id/text_username"
+        android:id="@+id/tvUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/image_profile"
-        android:layout_toRightOf="@+id/image_profile"
+        android:layout_toEndOf="@+id/ivProfile"
+        android:layout_toRightOf="@+id/ivProfile"
         android:text="Billy"
         android:textSize="16dp"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/text_body"
+        android:id="@+id/tvBody"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text_username"
-        android:layout_toEndOf="@+id/image_profile"
-        android:layout_toRightOf="@+id/image_profile"
+        android:layout_below="@+id/tvUsername"
+        android:layout_toEndOf="@+id/ivProfile"
+        android:layout_toRightOf="@+id/ivProfile"
         android:autoLink="all"
         android:linksClickable="true"
         android:text="New Text" />
 
     <TextView
-        android:id="@+id/text_timestamp"
+        android:id="@+id/tvTimestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

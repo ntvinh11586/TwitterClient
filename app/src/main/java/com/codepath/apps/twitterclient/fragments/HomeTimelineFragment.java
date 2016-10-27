@@ -5,17 +5,15 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.Toast;
 
 import com.activeandroid.util.SQLiteUtils;
-import com.codepath.apps.twitterclient.unities.NetworkHelper;
 import com.codepath.apps.twitterclient.R;
+import com.codepath.apps.twitterclient.models.Tweet;
 import com.codepath.apps.twitterclient.networks.TwitterApplication;
 import com.codepath.apps.twitterclient.networks.TwitterClient;
-import com.codepath.apps.twitterclient.models.Tweet;
+import com.codepath.apps.twitterclient.unities.NetworkHelper;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -23,9 +21,11 @@ import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
-public class HomeTimelineFragment extends TweetsListFragment implements CreateTweetDialogFragment.EditNameDialogListener {
+public class HomeTimelineFragment extends TweetsListFragment
+        implements CreateTweetDialogFragment.CreateNewTweetListener {
 
     private TwitterClient client;
+    private FloatingActionButton floatingActionButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,6 +33,7 @@ public class HomeTimelineFragment extends TweetsListFragment implements CreateTw
         setHasOptionsMenu(true);
         client = TwitterApplication.getRestClient();
 
+        // // TODO: 10/27/2016 tach ham ra
         if (NetworkHelper.isOnline()) {
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
             if (pref.getBoolean("username", true)) {
@@ -52,21 +53,20 @@ public class HomeTimelineFragment extends TweetsListFragment implements CreateTw
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.floating);
-        fab.setOnClickListener(new View.OnClickListener() {
+        floatingActionButton = (FloatingActionButton) view.findViewById(R.id.fabAddTweet);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showEditDialog();
+                showCreateTweetDialog();
             }
         });
     }
 
-    public void fetchTimelineAsync(int page) {
+    void fetchTimelineAsync(int page) {
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
                 refreshAll(Tweet.fromJSONArray(json, "home"));
-                SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) getView().findViewById(R.id.swipeContainer);
                 swipeContainer.setRefreshing(false);
             }
 
@@ -79,7 +79,6 @@ public class HomeTimelineFragment extends TweetsListFragment implements CreateTw
     }
 
     void customLoadMoreDataFromApi(int page) {
-
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
@@ -93,37 +92,10 @@ public class HomeTimelineFragment extends TweetsListFragment implements CreateTw
                 progressBar.setVisibility(View.GONE);
             }
         }, page + 1);
-
     }
-
-    private void showEditDialog() {
-        FragmentManager fm = getActivity().getSupportFragmentManager();
-        CreateTweetDialogFragment editNameDialogFragment = CreateTweetDialogFragment.newInstance("Some Title");
-        editNameDialogFragment.setTargetFragment(this, 1);
-        editNameDialogFragment.show(fm, "fragment_add_tweet");
-    }
-
-    private void populateTimeLine() {
-        if (NetworkHelper.isOnline()) {
-            client.getHomeTimeline(new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                    addAll(Tweet.fromJSONArray(json, "home"));
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    NetworkHelper.showFailureMessage(getActivity(), errorResponse);
-                }
-            }, 1);
-        } else {
-            Toast.makeText(getActivity(), "Offline", Toast.LENGTH_SHORT).show();
-        }
-    }
-
 
     @Override
-    public void onFinishEditDialog(String inputText) {
+    public void onFinishCreateNewTweet(String inputText) {
 
         TwitterClient client;
         client = TwitterApplication.getRestClient();
@@ -145,6 +117,31 @@ public class HomeTimelineFragment extends TweetsListFragment implements CreateTw
         }, 1);
     }
 
+    private void populateTimeLine() {
+        if (NetworkHelper.isOnline()) {
+            client.getHomeTimeline(new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
+                    addAll(Tweet.fromJSONArray(json, "home"));
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    NetworkHelper.showFailureMessage(getActivity(), errorResponse);
+                }
+            }, 1);
+        } else {
+            Toast.makeText(getActivity(), "Offline", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void showCreateTweetDialog() {
+        CreateTweetDialogFragment createTweetDialogFragment = CreateTweetDialogFragment.newInstance();
+        createTweetDialogFragment.setTargetFragment(this, 1);
+        createTweetDialogFragment.show(
+                getActivity().getSupportFragmentManager(),
+                "fragment_add_tweet");
+    }
 }
 
 

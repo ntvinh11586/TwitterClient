@@ -66,22 +66,22 @@ public class User extends Model implements Serializable {
     }
 
     public static User fromJSON(JSONObject json) {
-        User u = new User();
+        User user = new User();
         try {
-            u.id = ++Constants.userId;
-            u.name = json.getString("name");
-            u.uid = json.getLong("id");
-            u.screenName = json.getString("screen_name");
-            u.profileImageUrl = json.getString("profile_image_url");
-            u.tagline = json.getString("description");
-            u.followersCount = json.getInt("followers_count");
-            u.followingsCount = json.getInt("friends_count");
+            user.id = ++Constants.userId;
+            user.name = json.getString("name");
+            user.uid = json.getLong("id");
+            user.screenName = json.getString("screen_name");
+            user.profileImageUrl = json.getString("profile_image_url");
+            user.tagline = json.getString("description");
+            user.followersCount = json.getInt("followers_count");
+            user.followingsCount = json.getInt("friends_count");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        u.save();
+        user.save();
 
-        return u;
+        return user;
     }
 }
 

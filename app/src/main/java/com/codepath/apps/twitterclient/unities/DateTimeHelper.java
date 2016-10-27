@@ -10,7 +10,7 @@ import java.util.Locale;
  * Created by Vinh on 10/25/2016.
  */
 
-public class TwitterClientHelper {
+public class DateTimeHelper {
     // getRelativeTimeAgo("Mon Apr 01 21:16:23 +0000 2014");
     public static String getRelativeTimeAgo(String rawJsonDate) {
         String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";

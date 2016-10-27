@@ -19,6 +19,7 @@ import cz.msebera.android.httpclient.Header;
 public class UserFavoriteFragment extends TweetsListFragment {
 
     private TwitterClient client;
+    private String screenName;
 
     public static UserFavoriteFragment newInstance(String screen_name) {
         UserFavoriteFragment userFragment = new UserFavoriteFragment();
@@ -33,13 +34,12 @@ public class UserFavoriteFragment extends TweetsListFragment {
         super.onCreate(savedInstanceState);
 
         client = TwitterApplication.getRestClient();
+        screenName = getArguments().getString("screen_name");
         populateTimeLine();
     }
 
     @Override
-    public void fetchTimelineAsync(int page) {
-        String screenName = getArguments().getString("screen_name");
-
+    void fetchTimelineAsync(int page) {
         client.getUserFavorite(screenName, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
@@ -58,7 +58,6 @@ public class UserFavoriteFragment extends TweetsListFragment {
 
     @Override
     void customLoadMoreDataFromApi(int page) {
-        String screenName = getArguments().getString("screen_name");
         client.getUserFavorite(screenName, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
@@ -75,8 +74,6 @@ public class UserFavoriteFragment extends TweetsListFragment {
     }
 
     private void populateTimeLine() {
-        String screenName = getArguments().getString("screen_name");
-
         client.getUserFavorite(screenName, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
