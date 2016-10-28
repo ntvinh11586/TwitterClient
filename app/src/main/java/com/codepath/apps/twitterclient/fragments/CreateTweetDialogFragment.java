@@ -15,15 +15,23 @@ import android.widget.TextView;
 
 import com.codepath.apps.twitterclient.R;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * Created by Vinh on 10/25/2016.
  */
 
 public class CreateTweetDialogFragment extends DialogFragment {
 
-    private EditText mEditText;
-    private TextView tvNumber;
-    private Button mButton;
+    @BindView(R.id.etTweet)
+    EditText etTweet;
+    @BindView(R.id.tvAvailableCharacters)
+    TextView tvAvailableCharacters;
+    @BindView(R.id.btnTweet)
+    Button btnTweet;
+    private Unbinder unbinder;
 
     public interface CreateNewTweetListener {
         void onFinishCreateNewTweet(String inputText);
@@ -41,20 +49,25 @@ public class CreateTweetDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_add_tweet, container);
+        View view = inflater.inflate(R.layout.fragment_add_tweet, container);
+        unbinder = ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        tvNumber = (TextView) view.findViewById(R.id.tvAvailableCharacters);
-        tvNumber.setTextColor(ContextCompat.getColor(getContext(), android.R.color.holo_green_light));
-        mEditText = (EditText) view.findViewById(R.id.etTweet);
-        mButton = (Button) view.findViewById(R.id.btnTweet);
+        tvAvailableCharacters.setTextColor(ContextCompat.getColor(
+                getContext(), android.R.color.holo_green_light));
 
-        mEditText.requestFocus();
-        mEditText.addTextChangedListener(new TextWatcher() {
+        etTweet.requestFocus();
+        etTweet.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -62,19 +75,20 @@ public class CreateTweetDialogFragment extends DialogFragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                int currentTextSize = mEditText.getText().toString().length();
+                setTextAvailableCharacter(etTweet.getText().toString().length());
+            }
 
-                // // TODO: 10/27/2016 refactor after
-                if (140 - currentTextSize >= 0) {
-                    tvNumber.setTextColor(ContextCompat.getColor(getContext(),
+            private void setTextAvailableCharacter(int size) {
+                if (140 - size >= 0) {
+                    tvAvailableCharacters.setTextColor(ContextCompat.getColor(getContext(),
                             android.R.color.holo_green_light));
-                    mButton.setEnabled(true);
+                    btnTweet.setEnabled(true);
                 } else {
-                    tvNumber.setTextColor(ContextCompat.getColor(getContext(),
+                    tvAvailableCharacters.setTextColor(ContextCompat.getColor(getContext(),
                             android.R.color.holo_red_light));
-                    mButton.setEnabled(false);
+                    btnTweet.setEnabled(false);
                 }
-                tvNumber.setText(String.valueOf(140 - currentTextSize));
+                tvAvailableCharacters.setText(String.valueOf(140 - size));
             }
 
             @Override
@@ -83,11 +97,11 @@ public class CreateTweetDialogFragment extends DialogFragment {
             }
         });
 
-        mButton.setOnClickListener(new View.OnClickListener() {
+        btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((CreateNewTweetListener) getTargetFragment())
-                        .onFinishCreateNewTweet(mEditText.getText().toString());
+                        .onFinishCreateNewTweet(etTweet.getText().toString());
                 dismiss();
             }
         });

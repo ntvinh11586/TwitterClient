@@ -1,5 +1,6 @@
 package com.codepath.apps.twitterclient.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,65 +10,80 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.codepath.apps.twitterclient.unities.EndlessRecyclerViewScrollListener;
-import com.codepath.apps.twitterclient.unities.NetworkHelper;
 import com.codepath.apps.twitterclient.R;
-import com.codepath.apps.twitterclient.adapters.TweetArrayAdapter;
+import com.codepath.apps.twitterclient.activities.TweetActivity;
+import com.codepath.apps.twitterclient.adapters.TweetAdapter;
 import com.codepath.apps.twitterclient.models.Tweet;
+import com.codepath.apps.twitterclient.unities.EndlessRecyclerViewScrollListener;
+import com.codepath.apps.twitterclient.unities.ItemClickSupport;
+import com.codepath.apps.twitterclient.unities.NetworkHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 public abstract class TweetsListFragment extends Fragment {
 
-    protected ArrayList<Tweet> tweets;
-    protected TweetArrayAdapter aTweets;
+    protected ArrayList<Tweet> mTweets;
+    protected TweetAdapter tweetAdapter;
+
+    @BindView(R.id.rvTweets)
     protected RecyclerView rvTweets;
+    @BindView(R.id.swipeContainer)
     protected SwipeRefreshLayout swipeContainer;
-    protected ProgressBar progressBar;
+    @BindView(R.id.pbLoading)
+    protected ProgressBar pbLoading;
+    protected Unbinder unbinder;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //// TODO: 10/27/2016 refactory
-        tweets = new ArrayList<>();
-        aTweets = new TweetArrayAdapter(getActivity(), tweets);
+        setupDataHolding();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tweets_list, parent, false);
+        unbinder = ButterKnife.bind(this, view);
 
-        progressBar = (ProgressBar) view.findViewById(R.id.pbLoading);
-
-        rvTweets = (RecyclerView) view.findViewById(R.id.rvTweets);
-        rvTweets.setAdapter(aTweets);
+        rvTweets.setAdapter(tweetAdapter);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         rvTweets.setLayoutManager(linearLayoutManager);
         rvTweets.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
-
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
                 if (NetworkHelper.isOnline()) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    customLoadMoreDataFromApi(page);
+                    pbLoading.setVisibility(View.VISIBLE);
+                    loadDataFromApi(page + 1);
                 } else {
-                    Toast.makeText(getActivity(), "Offline", Toast.LENGTH_SHORT).show();
+                    NetworkHelper.showOfflineNetwork(getContext());
                 }
             }
         });
+        ItemClickSupport.addTo(rvTweets).setOnItemClickListener(
+          new ItemClickSupport.OnItemClickListener() {
+              @Override
+              public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+//                  User user = mTweets.get(position).getUser();
+                  Intent intent = new Intent(getActivity(), TweetActivity.class);
+                  intent.putExtra("tweet", mTweets.get(position));
+                  startActivity(intent);
+              }
+          }
+        );
 
-        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 if (NetworkHelper.isOnline()) {
                     fetchTimelineAsync(0);
                 } else {
-                    Toast.makeText(getActivity(), "Offline", Toast.LENGTH_SHORT).show();
+                    NetworkHelper.showOfflineNetwork(getContext());
                     swipeContainer.setRefreshing(false);
                 }
             }
@@ -77,19 +93,30 @@ public abstract class TweetsListFragment extends Fragment {
         return view;
     }
 
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
     abstract void fetchTimelineAsync(int page);
 
-    abstract void customLoadMoreDataFromApi(int page);
+    abstract void loadDataFromApi(int page);
 
-    public void addAll(List<Tweet> t) {
-        tweets.addAll(t);
-        aTweets.notifyDataSetChanged();
+    abstract void populateTimeLine();
+
+    private void setupDataHolding() {
+        mTweets = new ArrayList<>();
+        tweetAdapter = new TweetAdapter(getActivity(), mTweets);
     }
 
-    public void refreshAll(List<Tweet> t) {
-        tweets.clear();
-        tweets.addAll(t);
-        aTweets.notifyDataSetChanged();
+    public void addAll(List<Tweet> tweets) {
+        mTweets.addAll(tweets);
+        tweetAdapter.notifyDataSetChanged();
     }
 
+    public void refreshAll(List<Tweet> tweets) {
+        mTweets.clear();
+        mTweets.addAll(tweets);
+        tweetAdapter.notifyDataSetChanged();
+    }
 }

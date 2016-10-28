@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.List;
  * Created by Vinh on 10/25/2016.
  */
 @Table(name = "Tweets")
-public class Tweet extends Model {
+public class Tweet extends Model implements Serializable {
 
     @Column(name = "tweetid", unique = true)
     private long id;
@@ -25,7 +26,9 @@ public class Tweet extends Model {
     private long uid;
     @Column(name = "body")
     private String body;
-    @Column(name = "user", onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
+    @Column(name = "user",
+            onUpdate = Column.ForeignKeyAction.CASCADE,
+            onDelete = Column.ForeignKeyAction.CASCADE)
     private User user;
     @Column(name = "createdAt")
     private String createdAt;
@@ -77,7 +80,6 @@ public class Tweet extends Model {
 
     public static ArrayList<Tweet> fromJSONArray(JSONArray jsonArray, String tagName) {
         ArrayList<Tweet> tweets = new ArrayList<>();
-
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 JSONObject tweetJson = jsonArray.getJSONObject(i);
@@ -90,7 +92,6 @@ public class Tweet extends Model {
                 e.printStackTrace();
             }
         }
-
         return tweets;
     }
 
@@ -100,4 +101,6 @@ public class Tweet extends Model {
                 .where("tagName = ?", tagName)
                 .execute();
     }
+
+
 }

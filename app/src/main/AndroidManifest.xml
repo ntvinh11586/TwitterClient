@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name="com.codepath.apps.twitterclient.networks.TwitterApplication"
+        android:name=".networks.TwitterApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -22,30 +22,34 @@
             android:value="1" />
 
         <activity
-            android:name="com.codepath.apps.twitterclient.activities.LoginActivity"
+            android:name=".activities.LoginActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="cpsimpletweets"
                     android:scheme="oauth" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.codepath.apps.twitterclient.activities.TimelineActivity"
+            android:name=".activities.TimelineActivity"
             android:label="Home Timeline" />
         <activity android:name=".activities.ProfileActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.codepath.apps.twitterclient.activities.TimelineActivity" />
         </activity>
+        <activity android:name=".activities.TweetActivity"></activity>
     </application>
 
 </manifest>

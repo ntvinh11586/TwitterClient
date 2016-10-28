@@ -23,11 +23,11 @@ import org.scribe.builder.api.TwitterApi;
  * 
  */
 public class TwitterClient extends OAuthBaseClient {
-	public static final Class<? extends Api> REST_API_CLASS = TwitterApi.class; // Change this
-	public static final String REST_URL = "https://api.twitter.com/1.1"; // Change this, base API URL
-	public static final String REST_CONSUMER_KEY = "h2u1BtRI6PI5vlrE5qkBRzrQF";       // Change this
-	public static final String REST_CONSUMER_SECRET = "WNZBO7iCtFnYKCA7GVzo2sItQNo966IKCFiv9UCst5vPTXFVlu"; // Change this
-	public static final String REST_CALLBACK_URL = "oauth://cpsimpletweets"; // Change this (here and in manifest)
+	private static final Class<? extends Api> REST_API_CLASS = TwitterApi.class; // Change this
+	private static final String REST_URL = "https://api.twitter.com/1.1"; // Change this, base API URL
+	private static final String REST_CONSUMER_KEY = "h2u1BtRI6PI5vlrE5qkBRzrQF";       // Change this
+	private static final String REST_CONSUMER_SECRET = "WNZBO7iCtFnYKCA7GVzo2sItQNo966IKCFiv9UCst5vPTXFVlu"; // Change this
+	private static final String REST_CALLBACK_URL = "oauth://cpsimpletweets"; // Change this (here and in manifest)
 
 	private static final String STATUSES_HOME_TIMELINE = "statuses/home_timeline.json";
 	private static final String STATUSES_UPDATE = "statuses/update.json";
@@ -40,58 +40,46 @@ public class TwitterClient extends OAuthBaseClient {
 		super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
 	}
 
-	public void getHomeTimeline(AsyncHttpResponseHandler handler, int page) {
-		String apiUrl = getApiUrl(STATUSES_HOME_TIMELINE);
-
+	public void getHomeTimeline(int page, AsyncHttpResponseHandler handler) {
 		RequestParams params = new RequestParams();
-		params.put("count", 10);
+		params.put("count", 5);
 		params.put("since_id", 1);
 		params.put("page", page);
-
-		getClient().get(apiUrl, params, handler);
+		getClient().get(getApiUrl(STATUSES_HOME_TIMELINE), params, handler);
 	}
 
 
-	public void setNewTweet(AsyncHttpResponseHandler handler, String tweet) {
-		String apiUrl = getApiUrl(STATUSES_UPDATE);
-
+	public void setNewTweet(String tweet, AsyncHttpResponseHandler handler) {
 		RequestParams params = new RequestParams();
 		params.put("status", tweet);
-
-		getClient().post(apiUrl, params, handler);
+		getClient().post(getApiUrl(STATUSES_UPDATE), params, handler);
 	}
 
 
-	public void getMentionTimeline(JsonHttpResponseHandler handler, int page) {
-		String apiUrl = getApiUrl(STATUSES_MENTIONS_TIMELINE);
-
+	public void getMentionTimeline(int page, JsonHttpResponseHandler handler) {
 		RequestParams params = new RequestParams();
-		params.put("count", 7);
+		params.put("count", 5);
 		params.put("page", page);
-
-		getClient().get(apiUrl, params, handler);
+		getClient().get(getApiUrl(STATUSES_MENTIONS_TIMELINE), params, handler);
 	}
 
-	public void getUserTimeline(String screenName, AsyncHttpResponseHandler handler, int page) {
-		String apiUrl = getApiUrl(STATUSES_USER_TIMELINE);
+	public void getUserTimeline(String screenName, int page, AsyncHttpResponseHandler handler) {
 		RequestParams params = new RequestParams();
-		params.put("count", 7);
+		params.put("count", 5);
 		params.put("screen_name", screenName);
 		params.put("page", page);
-		getClient().get(apiUrl, params, handler);
+		getClient().get(getApiUrl(STATUSES_USER_TIMELINE), params, handler);
 	}
 
-	public void getUserFavorite(String screenName, AsyncHttpResponseHandler handler, int page) {
-		String apiUrl = getApiUrl(FAVORITES_LIST);
+	public void getUserFavorite(String screenName, int page, AsyncHttpResponseHandler handler) {
 		RequestParams params = new RequestParams();
-		params.put("count", 7);
+		params.put("count", 5);
 		params.put("screen_name", screenName);
 		params.put("page", page);
-		getClient().get(apiUrl, params, handler);
+		getClient().get(getApiUrl(FAVORITES_LIST), params, handler);
 	}
 
 	public void getUserInfo(AsyncHttpResponseHandler handler) {
-		String apiUrl = getApiUrl(ACCOUNT_VERIFY_CREDENTIALS);
-		getClient().get(apiUrl, null, handler);
+		getClient().get(getApiUrl(ACCOUNT_VERIFY_CREDENTIALS), null, handler);
 	}
 }

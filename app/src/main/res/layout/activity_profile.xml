@@ -16,7 +16,7 @@
         android:layout_alignParentTop="true">
 
         <ImageView
-            android:id="@+id/ivProfile"
+            android:id="@+id/ivProfileImage"
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_margin="8dp" />
@@ -25,16 +25,16 @@
             android:id="@+id/tvFullname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/ivProfile"
+            android:layout_alignTop="@+id/ivProfileImage"
             android:layout_margin="4dp"
-            android:layout_toEndOf="@+id/ivProfile"
-            android:layout_toRightOf="@+id/ivProfile"
+            android:layout_toEndOf="@+id/ivProfileImage"
+            android:layout_toRightOf="@+id/ivProfileImage"
             android:text="Name"
             android:textSize="20dp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tvTagLine"
+            android:id="@+id/tvTagline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/tvFullname"

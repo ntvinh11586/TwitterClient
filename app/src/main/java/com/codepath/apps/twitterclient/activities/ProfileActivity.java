@@ -15,26 +15,35 @@ import com.codepath.apps.twitterclient.adapters.UserPagerAdapter;
 import com.codepath.apps.twitterclient.models.User;
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ProfileActivity extends AppCompatActivity {
 
-    private User user;
-
-    TextView tvName;
+    @BindView(R.id.tvFullname)
+    TextView tvFullname;
+    @BindView(R.id.tvTagline)
     TextView tvTagline;
+    @BindView(R.id.tvFollower)
     TextView tvFollowers;
+    @BindView(R.id.tvFollowing)
     TextView tvFollowing;
+    @BindView(R.id.ivProfileImage)
     ImageView ivProfileImage;
+    @BindView(R.id.viewPager)
     ViewPager vpPager;
+    @BindView(R.id.tabStrip)
     PagerSlidingTabStrip tabStrip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        ButterKnife.bind(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        user = (User) getIntent().getSerializableExtra("user");
+        User user = (User) getIntent().getSerializableExtra("user");
         getSupportActionBar().setTitle(user.getScreenName());
         populateProfileHeader(user);
 
@@ -46,13 +55,7 @@ public class ProfileActivity extends AppCompatActivity {
 
 
     private void populateProfileHeader(User user) {
-        tvName = (TextView) findViewById(R.id.tvFullname);
-        tvTagline = (TextView) findViewById(R.id.tvTagLine);
-        tvFollowers = (TextView) findViewById(R.id.tvFollower);
-        tvFollowing = (TextView) findViewById(R.id.tvFollowing);
-        ivProfileImage = (ImageView) findViewById(R.id.ivProfile);
-
-        tvName.setText(user.getName());
+        tvFullname.setText(user.getName());
         tvTagline.setText(user.getTagline());
         tvFollowers.setText(user.getFollowersCount() + " Followers");
         tvFollowing.setText(user.getFollowingsCount() + " Following");

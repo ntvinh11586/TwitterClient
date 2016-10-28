@@ -27,10 +27,8 @@ public class UserPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         if (position == 0) {
             return UserTimelineFragment.newInstance(user.getScreenName());
-        } else if (position == 1) {
-            return UserFavoriteFragment.newInstance(user.getScreenName());
         } else {
-            return null;
+            return UserFavoriteFragment.newInstance(user.getScreenName());
         }
     }
 

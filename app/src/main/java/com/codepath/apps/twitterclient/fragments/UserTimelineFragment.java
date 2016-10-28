@@ -7,6 +7,7 @@ import com.codepath.apps.twitterclient.models.Tweet;
 import com.codepath.apps.twitterclient.networks.TwitterApplication;
 import com.codepath.apps.twitterclient.networks.TwitterClient;
 import com.codepath.apps.twitterclient.unities.NetworkHelper;
+import com.codepath.apps.twitterclient.unities.PersistingDataHelper;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -16,14 +17,13 @@ import cz.msebera.android.httpclient.Header;
 
 public class UserTimelineFragment extends TweetsListFragment {
 
-    private TwitterClient client;
-    private String screenName;
+    TwitterClient client;
+    String screenName;
 
-    // // TODO: 10/27/2016 nen tao 1 lan hay nhieu lan ???
-    public static UserTimelineFragment newInstance(String screen_name) {
-        UserTimelineFragment userFragment = new UserTimelineFragment();
+    public static UserTimelineFragment newInstance(String screenName) {
         Bundle args = new Bundle();
-        args.putString("screen_name", screen_name);
+        args.putString("screen_name", screenName);
+        UserTimelineFragment userFragment = new UserTimelineFragment();
         userFragment.setArguments(args);
         return userFragment;
     }
@@ -31,7 +31,6 @@ public class UserTimelineFragment extends TweetsListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         client = TwitterApplication.getRestClient();
         screenName = getArguments().getString("screen_name");
         populateTimeLine();
@@ -39,10 +38,10 @@ public class UserTimelineFragment extends TweetsListFragment {
 
     @Override
     void fetchTimelineAsync(int page) {
-        client.getUserTimeline(screenName, new JsonHttpResponseHandler() {
+        client.getUserTimeline(screenName, 1, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                refreshAll(Tweet.fromJSONArray(json, "none"));
+                refreshAll(Tweet.fromJSONArray(json, PersistingDataHelper.NONE_TAG));
                 swipeContainer.setRefreshing(false);
             }
 
@@ -51,38 +50,27 @@ public class UserTimelineFragment extends TweetsListFragment {
                 NetworkHelper.showFailureMessage(getActivity(), errorResponse);
                 swipeContainer.setRefreshing(false);
             }
-        }, 1);
+        });
     }
 
     @Override
-    void customLoadMoreDataFromApi(int page) {
-        client.getUserTimeline(screenName, new JsonHttpResponseHandler() {
+    void loadDataFromApi(int page) {
+        client.getUserTimeline(screenName, page, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                addAll(Tweet.fromJSONArray(json, "none"));
-                progressBar.setVisibility(View.GONE);
+                addAll(Tweet.fromJSONArray(json, PersistingDataHelper.NONE_TAG));
+                pbLoading.setVisibility(View.GONE);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 NetworkHelper.showFailureMessage(getActivity(), errorResponse);
-                progressBar.setVisibility(View.GONE);
+                pbLoading.setVisibility(View.GONE);
             }
-        }, page + 1);
+        });
     }
 
-    // // TODO: 10/27/2016 gop vao chung voi customLoadMoreDataFromApi 
-    private void populateTimeLine() {
-        client.getUserTimeline(screenName, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                addAll(Tweet.fromJSONArray(json, "none"));
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                NetworkHelper.showFailureMessage(getActivity(), errorResponse);
-            }
-        }, 1);
+    void populateTimeLine() {
+        loadDataFromApi(1);
     }
 }

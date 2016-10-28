@@ -39,4 +39,7 @@ public class NetworkHelper {
         }
     }
 
+    public static void showOfflineNetwork(Context context) {
+        Toast.makeText(context, "Offline mode", Toast.LENGTH_SHORT).show();
+    }
 }

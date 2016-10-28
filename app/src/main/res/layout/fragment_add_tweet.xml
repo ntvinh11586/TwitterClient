@@ -2,21 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/edit_name"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="8dp">
-
-    <TextView
-        android:id="@+id/tvYourTweet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="4dp"
-        android:text="Your Tweets"
-        android:textSize="18dp"
-        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/etTweet"
@@ -24,27 +12,31 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvYourTweet"
         android:layout_margin="4dp"
+        android:hint="What's happening?"
         android:inputType="textMultiLine" />
 
     <TextView
         android:id="@+id/tvAvailableCharacters"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:text="140"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="25dp"
         android:layout_below="@+id/etTweet"
-        android:layout_margin="4dp"
-        android:text="140" />
+        android:layout_toLeftOf="@+id/btnTweet"
+        android:layout_toStartOf="@+id/btnTweet" />
 
     <Button
         android:id="@+id/btnTweet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/tvAvailableCharacters"
-        android:layout_margin="4dp"
         android:background="@color/colorPrimaryDark"
         android:text="Tweet"
-        android:textColor="@android:color/white" />
+        android:minHeight="40dp"
+        android:minWidth="80dp"
+        android:textColor="@android:color/white"
+        android:layout_alignTop="@+id/tvAvailableCharacters"
+        android:layout_alignRight="@+id/etTweet"
+        android:layout_alignEnd="@+id/etTweet" />
 </RelativeLayout>

@@ -6,7 +6,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 import com.astuetz.PagerSlidingTabStrip;
@@ -20,6 +19,8 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONObject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 /**
@@ -27,19 +28,18 @@ import cz.msebera.android.httpclient.Header;
  */
 public class TimelineActivity extends AppCompatActivity {
 
-    ViewPager vpPager;
-    PagerSlidingTabStrip tabStrip;
-
     TwitterClient client;
+    @BindView(R.id.viewPager)
+    ViewPager vpPager;
+    @BindView(R.id.tabStrip)
+    PagerSlidingTabStrip tabStrip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
         ActiveAndroid.initialize(this);
-
-        vpPager = (ViewPager) findViewById(R.id.viewPager);
-        tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabStrip);
+        ButterKnife.bind(this);
 
         vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
         tabStrip.setViewPager(vpPager);
@@ -72,13 +72,14 @@ public class TimelineActivity extends AppCompatActivity {
             client.getUserInfo(new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    // TODO: 10/27/2016 parcelable
                     Intent intent = new Intent(TimelineActivity.this, ProfileActivity.class);
                     intent.putExtra("user", User.fromJSON(response));
                     startActivity(intent);
                 }
             });
         } else {
-            Toast.makeText(this, "Offline mode", Toast.LENGTH_SHORT).show();
+            NetworkHelper.showOfflineNetwork(this);
         }
     }
 }

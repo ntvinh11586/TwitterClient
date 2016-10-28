@@ -80,7 +80,6 @@ public class User extends Model implements Serializable {
             e.printStackTrace();
         }
         user.save();
-
         return user;
     }
 }

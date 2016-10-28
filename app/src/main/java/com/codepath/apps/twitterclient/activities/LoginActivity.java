@@ -1,15 +1,13 @@
 package com.codepath.apps.twitterclient.activities;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.View;
 
 import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.networks.TwitterClient;
-import com.codepath.apps.twitterclient.unities.Constants;
+import com.codepath.apps.twitterclient.unities.PersistingDataHelper;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
 
 public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
@@ -32,12 +30,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	// i.e Display application "homepage"
 	@Override
 	public void onLoginSuccess() {
-
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-		SharedPreferences.Editor edit = pref.edit();
-		edit.putBoolean(Constants.EXIST_DATA, false);
-		edit.apply();
-
+		PersistingDataHelper.createPersistingData(this);
 		startActivity(new Intent(this, TimelineActivity.class));
 	}
 
