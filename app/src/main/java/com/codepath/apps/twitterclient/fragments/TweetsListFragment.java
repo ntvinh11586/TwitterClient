@@ -19,6 +19,8 @@ import com.codepath.apps.twitterclient.unities.EndlessRecyclerViewScrollListener
 import com.codepath.apps.twitterclient.unities.ItemClickSupport;
 import com.codepath.apps.twitterclient.unities.NetworkHelper;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +72,7 @@ public abstract class TweetsListFragment extends Fragment {
               public void onItemClicked(RecyclerView recyclerView, int position, View v) {
 //                  User user = mTweets.get(position).getUser();
                   Intent intent = new Intent(getActivity(), TweetActivity.class);
-                  intent.putExtra("tweet", mTweets.get(position));
+                  intent.putExtra("tweet", Parcels.wrap(mTweets.get(position)));
                   startActivity(intent);
               }
           }

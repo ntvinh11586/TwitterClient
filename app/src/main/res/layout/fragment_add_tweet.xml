@@ -10,9 +10,10 @@
         android:id="@+id/etTweet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvYourTweet"
         android:layout_margin="4dp"
         android:hint="What's happening?"
+        android:minLines="10"
+        android:gravity="top"
         android:inputType="textMultiLine" />
 
     <TextView
@@ -36,7 +37,8 @@
         android:minHeight="40dp"
         android:minWidth="80dp"
         android:textColor="@android:color/white"
-        android:layout_alignTop="@+id/tvAvailableCharacters"
+        android:layout_alignBaseline="@+id/tvAvailableCharacters"
+        android:layout_alignBottom="@+id/tvAvailableCharacters"
         android:layout_alignRight="@+id/etTweet"
         android:layout_alignEnd="@+id/etTweet" />
 </RelativeLayout>

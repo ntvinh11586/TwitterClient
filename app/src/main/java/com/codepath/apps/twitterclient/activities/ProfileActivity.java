@@ -10,13 +10,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.bumptech.glide.Glide;
 import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.adapters.UserPagerAdapter;
 import com.codepath.apps.twitterclient.models.User;
-import com.squareup.picasso.Picasso;
+
+import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -42,8 +45,7 @@ public class ProfileActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        User user = (User) getIntent().getSerializableExtra("user");
+        User user = Parcels.unwrap(getIntent().getParcelableExtra("user"));
         getSupportActionBar().setTitle(user.getScreenName());
         populateProfileHeader(user);
 
@@ -59,8 +61,9 @@ public class ProfileActivity extends AppCompatActivity {
         tvTagline.setText(user.getTagline());
         tvFollowers.setText(user.getFollowersCount() + " Followers");
         tvFollowing.setText(user.getFollowingsCount() + " Following");
-        Picasso.with(this)
+        Glide.with(this)
                 .load(user.getProfileImageUrl())
+                .bitmapTransform(new RoundedCornersTransformation(this, 5, 0))
                 .into(ivProfileImage);
     }
 

@@ -18,6 +18,7 @@ import com.codepath.apps.twitterclient.unities.NetworkHelper;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,7 +75,7 @@ public class TimelineActivity extends AppCompatActivity {
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     // TODO: 10/27/2016 parcelable
                     Intent intent = new Intent(TimelineActivity.this, ProfileActivity.class);
-                    intent.putExtra("user", User.fromJSON(response));
+                    intent.putExtra("user", Parcels.wrap(User.fromJSON(response)));
                     startActivity(intent);
                 }
             });

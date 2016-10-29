@@ -9,16 +9,17 @@ import com.codepath.apps.twitterclient.unities.Constants;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Vinh on 10/25/2016.
  */
+@Parcel(analyze = Tweet.class)
 @Table(name = "Tweets")
-public class Tweet extends Model implements Serializable {
+public class Tweet extends Model {
 
     @Column(name = "tweetid", unique = true)
     private long id;

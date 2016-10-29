@@ -7,14 +7,14 @@ import com.codepath.apps.twitterclient.unities.Constants;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.Serializable;
+import org.parceler.Parcel;
 
 /**
  * Created by Vinh on 10/25/2016.
  */
+@Parcel(analyze = User.class)
 @Table(name = "Users")
-public class User extends Model implements Serializable {
+public class User extends Model {
 
     @Column(name = "userid", unique = true)
     private long id;

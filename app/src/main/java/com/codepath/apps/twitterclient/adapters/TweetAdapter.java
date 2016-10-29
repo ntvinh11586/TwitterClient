@@ -7,14 +7,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.Glide;
 import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.activities.ProfileActivity;
 import com.codepath.apps.twitterclient.models.Tweet;
 import com.codepath.apps.twitterclient.unities.DateTimeHelper;
 import com.codepath.apps.twitterclient.unities.NetworkHelper;
-import com.squareup.picasso.Picasso;
+
+import org.parceler.Parcels;
 
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
+
 
 /**
  * Created by Vinh on 10/25/2016.
@@ -43,23 +48,23 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetViewHolder> {
 
     @Override
     public void onBindViewHolder(TweetViewHolder viewHolder, int position) {
-        Tweet tweet = mTweets.get(position);
+        final Tweet tweet = mTweets.get(position);
 
         viewHolder.tvUsername.setText(tweet.getUser().getScreenName());
         viewHolder.tvBody.setText(tweet.getBody());
         viewHolder.tvTimestamp.setText(DateTimeHelper.getRelativeTimeAgo(tweet.getTimestamp()));
         viewHolder.ivProfileImage.setImageResource(android.R.color.transparent);
-        Picasso.with(getContext())
+        Glide.with(getContext())
                 .load(tweet.getUser().getProfileImageUrl())
+                .bitmapTransform(new RoundedCornersTransformation(getContext(),5, 0))
                 .into(viewHolder.ivProfileImage);
 
-        viewHolder.ivProfileImage.setTag(tweet);
         viewHolder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (NetworkHelper.isOnline()) {
                     Intent intent = new Intent(getContext(), ProfileActivity.class);
-                    intent.putExtra("user", ((Tweet)view.getTag()).getUser());
+                    intent.putExtra("user", Parcels.wrap(tweet.getUser()));
                     getContext().startActivity(intent);
                 } else {
                     NetworkHelper.showOfflineNetwork(getContext());

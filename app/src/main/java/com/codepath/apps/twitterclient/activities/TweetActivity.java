@@ -23,6 +23,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,8 +55,7 @@ public class TweetActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tweet);
         ButterKnife.bind(this);
 
-        Tweet tweet = (Tweet) getIntent().getSerializableExtra("tweet");
-
+        final Tweet tweet = Parcels.unwrap(getIntent().getParcelableExtra("tweet"));
         tvUsername.setText(tweet.getUser().getScreenName());
         tvBody.setText(tweet.getBody());
         tvTimestamp.setText(DateTimeHelper.getRelativeTimeAgo(tweet.getTimestamp()));
@@ -70,7 +70,7 @@ public class TweetActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (NetworkHelper.isOnline()) {
                     Intent intent = new Intent(getContext(), ProfileActivity.class);
-                    intent.putExtra("user", ((Tweet)view.getTag()).getUser());
+                    intent.putExtra("user", Parcels.wrap(((Tweet)view.getTag()).getUser()));
                     startActivity(intent);
                 } else {
                     NetworkHelper.showOfflineNetwork(getContext());
@@ -117,7 +117,8 @@ public class TweetActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 client = TwitterApplication.getRestClient();
-                client.setNewTweet(etTweet.getText().toString(), new JsonHttpResponseHandler(){
+                client.setNewTweetReply(etTweet.getText().toString(), tweet.getUid(),
+                        new JsonHttpResponseHandler(){
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         super.onSuccess(statusCode, headers, response);
