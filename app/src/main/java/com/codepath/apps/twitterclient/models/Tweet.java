@@ -38,6 +38,8 @@ public class Tweet extends Model {
     @Column(name = "tagName")
     private String tagName;
 
+    private String mediaUrl;
+
     public String getBody() {
         return body;
     }
@@ -58,6 +60,10 @@ public class Tweet extends Model {
         return timestamp;
     }
 
+    public String getMediaUrl() {
+        return mediaUrl;
+    }
+
     public Tweet() {
         super();
     }
@@ -72,6 +78,10 @@ public class Tweet extends Model {
             tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
             tweet.timestamp = jsonObject.getString("created_at");
             tweet.tagName = tagName;
+            tweet.mediaUrl = jsonObject.getJSONObject("extended_entities")
+                    .getJSONArray("media")
+                    .getJSONObject(0)
+                    .getString("media_url");
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -20,10 +20,14 @@ public class TweetViewHolder extends RecyclerView.ViewHolder {
     ImageView ivProfileImage;
     @BindView(R.id.tvUsername)
     TextView tvUsername;
+    @BindView(R.id.tvName)
+    TextView tvName;
     @BindView(R.id.tvBody)
     TextView tvBody;
     @BindView(R.id.tvTimestamp)
     TextView tvTimestamp;
+    @BindView(R.id.ivTimeline)
+    ImageView ivTimeline;
 
     public TweetViewHolder(View itemView) {
         super(itemView);

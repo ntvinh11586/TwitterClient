@@ -20,6 +20,8 @@ import java.util.List;
 
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
+import static android.view.View.GONE;
+
 
 /**
  * Created by Vinh on 10/25/2016.
@@ -50,14 +52,25 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetViewHolder> {
     public void onBindViewHolder(TweetViewHolder viewHolder, int position) {
         final Tweet tweet = mTweets.get(position);
 
-        viewHolder.tvUsername.setText(tweet.getUser().getScreenName());
-        viewHolder.tvBody.setText(tweet.getBody());
+        viewHolder.tvName.setText(tweet.getUser().getName());
+        viewHolder.tvUsername.setText("@" + tweet.getUser().getScreenName());
+        viewHolder.tvBody.setText(tweet.getBody().trim());
         viewHolder.tvTimestamp.setText(DateTimeHelper.getRelativeTimeAgo(tweet.getTimestamp()));
         viewHolder.ivProfileImage.setImageResource(android.R.color.transparent);
         Glide.with(getContext())
                 .load(tweet.getUser().getProfileImageUrl())
                 .bitmapTransform(new RoundedCornersTransformation(getContext(),5, 0))
                 .into(viewHolder.ivProfileImage);
+
+        if (tweet.getMediaUrl() != null) {
+            Glide.with(getContext())
+                    .load(tweet.getMediaUrl())
+                    .bitmapTransform(new RoundedCornersTransformation(getContext(),10, 0))
+                    .into(viewHolder.ivTimeline);
+        } else {
+            viewHolder.ivTimeline.setVisibility(GONE);
+        }
+
 
         viewHolder.ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override

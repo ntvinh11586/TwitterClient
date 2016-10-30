@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:hint="What's happening?"
-        android:minLines="10"
         android:gravity="top"
         android:inputType="textMultiLine" />
 

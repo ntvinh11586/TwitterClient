@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.models.Tweet;
 import com.codepath.apps.twitterclient.networks.TwitterApplication;
@@ -20,7 +21,6 @@ import com.codepath.apps.twitterclient.networks.TwitterClient;
 import com.codepath.apps.twitterclient.unities.DateTimeHelper;
 import com.codepath.apps.twitterclient.unities.NetworkHelper;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 import org.parceler.Parcels;
@@ -28,14 +28,16 @@ import org.parceler.Parcels;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
+import static android.view.View.GONE;
 import static com.activeandroid.Cache.getContext;
 
 public class TweetActivity extends AppCompatActivity {
     @BindView(R.id.ivProfileImage)
     ImageView ivProfileImage;
-    @BindView(R.id.tvUsername)
-    TextView tvUsername;
+    @BindView(R.id.tvName)
+    TextView tvName;
     @BindView(R.id.tvBody)
     TextView tvBody;
     @BindView(R.id.tvTimestamp)
@@ -46,7 +48,8 @@ public class TweetActivity extends AppCompatActivity {
     TextView tvAvailableCharacters;
     @BindView(R.id.btnTweet)
     Button btnTweet;
-
+    @BindView(R.id.ivTimeline)
+    ImageView ivTimeline;
     TwitterClient client;
 
     @Override
@@ -56,13 +59,22 @@ public class TweetActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         final Tweet tweet = Parcels.unwrap(getIntent().getParcelableExtra("tweet"));
-        tvUsername.setText(tweet.getUser().getScreenName());
+        tvName.setText(tweet.getUser().getScreenName());
         tvBody.setText(tweet.getBody());
         tvTimestamp.setText(DateTimeHelper.getRelativeTimeAgo(tweet.getTimestamp()));
         ivProfileImage.setImageResource(android.R.color.transparent);
-        Picasso.with(getContext())
+        Glide.with(getContext())
                 .load(tweet.getUser().getProfileImageUrl())
                 .into(ivProfileImage);
+        if (tweet.getMediaUrl() != null) {
+            Glide.with(getContext())
+                    .load(tweet.getMediaUrl())
+                    .bitmapTransform(new RoundedCornersTransformation(getContext(),10, 0))
+                    .into(ivTimeline);
+        } else {
+            ivTimeline.setVisibility(GONE);
+        }
+
 
         ivProfileImage.setTag(tweet);
         ivProfileImage.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +89,7 @@ public class TweetActivity extends AppCompatActivity {
                 }
             }
         });
+
 
         tvAvailableCharacters.setTextColor(ContextCompat.getColor(
                 getContext(), android.R.color.holo_green_light));
