@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.apps.twitterclient.R;
+import com.codepath.apps.twitterclient.unities.LinkifiedTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,7 +24,7 @@ public class TweetViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.tvName)
     TextView tvName;
     @BindView(R.id.tvBody)
-    TextView tvBody;
+    LinkifiedTextView tvBody;
     @BindView(R.id.tvTimestamp)
     TextView tvTimestamp;
     @BindView(R.id.ivTimeline)
