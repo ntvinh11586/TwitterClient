@@ -29,7 +29,6 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 public abstract class TweetsListFragment extends Fragment {
-
     protected ArrayList<Tweet> mTweets;
     protected TweetAdapter tweetAdapter;
 
@@ -67,15 +66,15 @@ public abstract class TweetsListFragment extends Fragment {
             }
         });
         ItemClickSupport.addTo(rvTweets).setOnItemClickListener(
-          new ItemClickSupport.OnItemClickListener() {
-              @Override
-              public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                new ItemClickSupport.OnItemClickListener() {
+                    @Override
+                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
 //                  User user = mTweets.get(position).getUser();
-                  Intent intent = new Intent(getActivity(), TweetActivity.class);
-                  intent.putExtra("tweet", Parcels.wrap(mTweets.get(position)));
-                  startActivity(intent);
-              }
-          }
+                        Intent intent = new Intent(getActivity(), TweetActivity.class);
+                        intent.putExtra("tweet", Parcels.wrap(mTweets.get(position)));
+                        startActivity(intent);
+                    }
+                }
         );
 
 
@@ -95,7 +94,8 @@ public abstract class TweetsListFragment extends Fragment {
         return view;
     }
 
-    @Override public void onDestroyView() {
+    @Override
+    public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }

@@ -69,7 +69,7 @@ public class TweetActivity extends AppCompatActivity {
         if (tweet.getMediaUrl() != null) {
             Glide.with(getContext())
                     .load(tweet.getMediaUrl())
-                    .bitmapTransform(new RoundedCornersTransformation(getContext(),10, 0))
+                    .bitmapTransform(new RoundedCornersTransformation(getContext(), 10, 0))
                     .into(ivTimeline);
         } else {
             ivTimeline.setVisibility(GONE);
@@ -82,7 +82,7 @@ public class TweetActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (NetworkHelper.isOnline()) {
                     Intent intent = new Intent(getContext(), ProfileActivity.class);
-                    intent.putExtra("user", Parcels.wrap(((Tweet)view.getTag()).getUser()));
+                    intent.putExtra("user", Parcels.wrap(((Tweet) view.getTag()).getUser()));
                     startActivity(intent);
                 } else {
                     NetworkHelper.showOfflineNetwork(getContext());
@@ -131,20 +131,19 @@ public class TweetActivity extends AppCompatActivity {
             public void onClick(View view) {
                 client = TwitterApplication.getRestClient();
                 client.setNewTweetReply(etTweet.getText().toString(), tweet.getUid(),
-                        new JsonHttpResponseHandler(){
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        super.onSuccess(statusCode, headers, response);
-                        Toast.makeText(TweetActivity.this, "Reply Successfully!", Toast.LENGTH_SHORT).show();
-                    }
+                        new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                super.onSuccess(statusCode, headers, response);
+                                Toast.makeText(TweetActivity.this, "Reply Successfully!", Toast.LENGTH_SHORT).show();
+                            }
 
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        Toast.makeText(TweetActivity.this, responseString, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                Toast.makeText(TweetActivity.this, responseString, Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
         });
     }
-
 }

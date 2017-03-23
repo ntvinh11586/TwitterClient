@@ -11,10 +11,6 @@ import com.codepath.apps.twitterclient.unities.LinkifiedTextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by Vinh on 10/27/2016.
- */
-
 public class TweetViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.ivProfileImage)

@@ -22,7 +22,6 @@ import butterknife.ButterKnife;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class ProfileActivity extends AppCompatActivity {
-
     @BindView(R.id.tvFullname)
     TextView tvFullname;
     @BindView(R.id.tvTagline)

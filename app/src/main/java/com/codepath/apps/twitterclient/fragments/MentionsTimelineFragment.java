@@ -18,8 +18,9 @@ import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
 
-public class MentionsTimelineFragment extends TweetsListFragment implements CreateTweetDialogFragment.CreateNewTweetListener {
-
+public class MentionsTimelineFragment
+        extends TweetsListFragment
+        implements CreateTweetDialogFragment.CreateNewTweetListener {
     TwitterClient client;
 
     public static MentionsTimelineFragment newInstance() {

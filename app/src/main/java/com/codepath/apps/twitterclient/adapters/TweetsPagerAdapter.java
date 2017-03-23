@@ -7,10 +7,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.codepath.apps.twitterclient.fragments.HomeTimelineFragment;
 import com.codepath.apps.twitterclient.fragments.MentionsTimelineFragment;
 
-/**
- * Created by Vinh on 10/27/2016.
- */
-
 public class TweetsPagerAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 2;
     private String tabTitles[] = {"Home", "Mentions"};

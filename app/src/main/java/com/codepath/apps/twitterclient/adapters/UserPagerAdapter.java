@@ -8,10 +8,6 @@ import com.codepath.apps.twitterclient.fragments.UserFavoriteFragment;
 import com.codepath.apps.twitterclient.fragments.UserTimelineFragment;
 import com.codepath.apps.twitterclient.models.User;
 
-/**
- * Created by Vinh on 10/27/2016.
- */
-
 public class UserPagerAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 2;
     private String tabTitles[] = {"Post", "Favorites"};

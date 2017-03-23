@@ -14,13 +14,9 @@ import org.parceler.Parcel;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Vinh on 10/25/2016.
- */
 @Parcel(analyze = Tweet.class)
 @Table(name = "Tweets")
 public class Tweet extends Model {
-
     @Column(name = "tweetid", unique = true)
     private long id;
     @Column(name = "uid")

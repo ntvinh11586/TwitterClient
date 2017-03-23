@@ -6,10 +6,6 @@ import android.preference.PreferenceManager;
 
 import com.activeandroid.util.SQLiteUtils;
 
-/**
- * Created by Vinh on 10/27/2016.
- */
-
 public class PersistingDataHelper {
     public static String HOME_TAG = "home";
     public static String MENTION_TAG = "mention";

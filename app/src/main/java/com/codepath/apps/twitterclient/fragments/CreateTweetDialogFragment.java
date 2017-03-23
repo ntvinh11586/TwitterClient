@@ -19,10 +19,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-/**
- * Created by Vinh on 10/25/2016.
- */
-
 public class CreateTweetDialogFragment extends DialogFragment {
 
     @BindView(R.id.etTweet)
@@ -54,7 +50,8 @@ public class CreateTweetDialogFragment extends DialogFragment {
         return view;
     }
 
-    @Override public void onDestroyView() {
+    @Override
+    public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }

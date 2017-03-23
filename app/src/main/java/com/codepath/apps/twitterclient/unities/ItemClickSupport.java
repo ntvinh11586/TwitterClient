@@ -5,10 +5,6 @@ import android.view.View;
 
 import com.codepath.apps.twitterclient.R;
 
-/**
- * Created by Vinh on 10/27/2016.
- */
-
 public class ItemClickSupport {
     private final RecyclerView mRecyclerView;
     private OnItemClickListener mOnItemClickListener;

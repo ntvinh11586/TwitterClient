@@ -24,11 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
-/**
- * Created by Vinh on 10/25/2016.
- */
 public class TimelineActivity extends AppCompatActivity {
-
     TwitterClient client;
     @BindView(R.id.viewPager)
     ViewPager vpPager;

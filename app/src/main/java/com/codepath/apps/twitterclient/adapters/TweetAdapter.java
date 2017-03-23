@@ -15,17 +15,9 @@ import com.codepath.apps.twitterclient.unities.DateTimeHelper;
 import com.codepath.apps.twitterclient.unities.NetworkHelper;
 
 import org.parceler.Parcels;
-
 import java.util.List;
-
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
-
 import static android.view.View.GONE;
-
-
-/**
- * Created by Vinh on 10/25/2016.
- */
 
 public class TweetAdapter extends RecyclerView.Adapter<TweetViewHolder> {
 
@@ -59,13 +51,13 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetViewHolder> {
         viewHolder.ivProfileImage.setImageResource(android.R.color.transparent);
         Glide.with(getContext())
                 .load(tweet.getUser().getProfileImageUrl())
-                .bitmapTransform(new RoundedCornersTransformation(getContext(),5, 0))
+                .bitmapTransform(new RoundedCornersTransformation(getContext(), 5, 0))
                 .into(viewHolder.ivProfileImage);
 
         if (tweet.getMediaUrl() != null) {
             Glide.with(getContext())
                     .load(tweet.getMediaUrl())
-                    .bitmapTransform(new RoundedCornersTransformation(getContext(),10, 0))
+                    .bitmapTransform(new RoundedCornersTransformation(getContext(), 10, 0))
                     .into(viewHolder.ivTimeline);
         } else {
             viewHolder.ivTimeline.setVisibility(GONE);
